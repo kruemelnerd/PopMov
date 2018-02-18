@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="movie_cover_height">160dp</dimen>
+    <dimen name="movie_cover_height">270dp</dimen>
     <dimen name="card_margin">5dp</dimen>
     <dimen name="card_movie_radius">0dp</dimen>
     <dimen name="card_movie_title_padding">5dp</dimen>

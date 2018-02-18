@@ -28,7 +28,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public ImageView thumbnail;
-        //Test
 
         public MyViewHolder(View view){
             super(view);
@@ -42,6 +41,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         this.movieList = movies;
     }
 
+    public void setMovieList(List<Movie> movies){
+        this.movieList = movies;
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_card, parent, false);
@@ -52,7 +55,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Movie movie = movieList.get(position);
         holder.title.setText(movie.getTitle());
-        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg").into(holder.thumbnail);
+        Picasso.with(mContext).load( movie.getPosterPath()).into(holder.thumbnail);
     }
 
     @Override

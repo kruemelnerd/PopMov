@@ -9,19 +9,25 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.philippveit.popmov.MVP.MainMVP;
 import de.philippveit.popmov.data.Movie;
+import de.philippveit.popmov.presenter.MainPresenter;
 import de.philippveit.popmov.view.MovieAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainMVP.RequieredViewOps {
 
     private RecyclerView recyclerView;
     private MovieAdapter movieAdapter;
     private List<Movie> movieList;
 
+    private MainMVP.PresenterOps mMoviePresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mMoviePresenter = new MainPresenter(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.mainActivity_recycler_view);
 
@@ -33,49 +39,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(movieAdapter);
 
-        prepareMovies();
+        mMoviePresenter.getPopularMovies();
     }
 
+    @Override
+    public void showMovies(List<Movie> movies) {
 
-    private void prepareMovies(){
-
-        Movie movie = new Movie();
-        movie.setTitle("Interstellar");
-        movieList.add(movie);
-
-        movie = new Movie();
-        movie.setTitle("Toy Story");
-        movieList.add(movie);
-
-        movie = new Movie();
-        movie.setTitle("Toy Story 2");
-        movieList.add(movie);
-
-        movie = new Movie();
-        movie.setTitle("Die Schöne und das Biest");
-        movieList.add(movie);
-
-        movie = new Movie();
-        movie.setTitle("Monty Pythons's Der Sinn des Lebens");
-        movieList.add(movie);
-
-        movie = new Movie();
-        movie.setTitle("Krieg der Sterne - Die Rückkehr der Jedi-Ritter");
-        movieList.add(movie);
-
-        movie = new Movie();
-        movie.setTitle("Black Panther");
-        movieList.add(movie);
-
-        movie = new Movie();
-        movie.setTitle("Ip Man");
-        movieList.add(movie);
-
-        movie = new Movie();
-        movie.setTitle("Furios 7");
-        movieList.add(movie);
-
-
-
+        movieList = movies;
+        movieAdapter.setMovieList(movieList);
+        movieAdapter.notifyDataSetChanged();
     }
+
 }
