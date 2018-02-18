@@ -52,6 +52,18 @@ public class MainActivity extends AppCompatActivity {
         movieList.add(movie);
 
         movie = new Movie();
+        movie.setTitle("Die Schöne und das Biest");
+        movieList.add(movie);
+
+        movie = new Movie();
+        movie.setTitle("Monty Pythons's Der Sinn des Lebens");
+        movieList.add(movie);
+
+        movie = new Movie();
+        movie.setTitle("Krieg der Sterne - Die Rückkehr der Jedi-Ritter");
+        movieList.add(movie);
+
+        movie = new Movie();
         movie.setTitle("Black Panther");
         movieList.add(movie);
 
@@ -62,5 +74,8 @@ public class MainActivity extends AppCompatActivity {
         movie = new Movie();
         movie.setTitle("Furios 7");
         movieList.add(movie);
+
+
+
     }
 }
