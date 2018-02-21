@@ -12,10 +12,10 @@ import de.philippveit.popmov.model.MovieModel;
 
 public class MainPresenter implements MainMVP.PresenterOps {
 
-    private MainMVP.RequieredViewOps mMovieView;
+    private MainMVP.ViewOverviewOps mMovieView;
     private MainMVP.ModelOps mMovieModel;
 
-    public MainPresenter(MainMVP.RequieredViewOps mMovieView) {
+    public MainPresenter(MainMVP.ViewOverviewOps mMovieView) {
         this.mMovieView = mMovieView;
         this.mMovieModel = new MovieModel();
     }

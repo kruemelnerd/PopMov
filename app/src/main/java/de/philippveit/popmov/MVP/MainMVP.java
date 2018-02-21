@@ -13,8 +13,12 @@ public interface MainMVP {
      * View mandatory methods. Available to the presenter
      *      Presenter -> View
      */
-    interface RequieredViewOps {
+    interface ViewOverviewOps {
         void showMovies(List<Movie> movies);
+    }
+
+    interface ViewDetailOps {
+        void showMovie(Movie movie);
     }
 
 

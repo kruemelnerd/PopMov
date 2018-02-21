@@ -1,10 +1,14 @@
 package de.philippveit.popmov.data;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -12,7 +16,7 @@ import java.util.List;
  * Created by pveit on 17.02.2018.
  */
 
-public class Movie {
+public class Movie implements Parcelable{
 
     @SerializedName("adult")
     private Boolean adult;
@@ -160,5 +164,68 @@ public class Movie {
     public String toString() {
         return new ToStringBuilder(this).append("voteCount", voteCount).append("id", id).append("video", video).append("voteAverage", voteAverage).append("title", title).append("popularity", popularity).append("posterPath", posterPath).append("originalLanguage", originalLanguage).append("originalTitle", originalTitle).append("genreIds", genreIds).append("backdropPath", backdropPath).append("adult", adult).append("overview", overview).append("releaseDate", releaseDate).toString();
     }
+
+
+    //Necessary for transmitting the Movie-Class in an Intent
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.adult ? 1 : 0);
+        parcel.writeString(this.backdropPath);
+        parcel.writeList(this.genreIds);
+        parcel.writeLong(this.id);
+        parcel.writeString(this.originalLanguage);
+        parcel.writeString(this.originalTitle);
+        parcel.writeString(this.overview);
+        parcel.writeDouble(this.popularity);
+        parcel.writeString(this.overview);
+        parcel.writeString(this.posterPath);
+        parcel.writeString(this.releaseDate);
+        parcel.writeString(this.title);
+        parcel.writeInt(this.video ? 1 : 0);
+        parcel.writeDouble(this.voteAverage);
+        parcel.writeLong(this.voteCount);
+    }
+
+    private void readFromParcel(Parcel in) {
+        adult  = (in.readInt() == 0) ? false : true;
+        backdropPath = in.readString();
+        genreIds = new ArrayList<Long>();
+        in.readList(genreIds, Movie.class.getClassLoader());
+        this.id = in.readLong();
+        this.originalLanguage = in.readString();
+        this.originalTitle = in.readString();
+        this.overview = in.readString();
+        this.popularity = in.readDouble();
+        this.overview = in.readString();
+        this.posterPath = in.readString();
+        this.releaseDate = in.readString();
+        this.title = in.readString();
+        this.video = (in.readInt() == 0) ? false : true;
+        this.voteAverage = in.readDouble();
+        this.voteCount = in.readLong();
+    }
+
+    public Movie(Parcel parcel) {
+        readFromParcel(parcel);
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
 
 }

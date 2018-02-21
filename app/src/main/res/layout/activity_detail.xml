@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/imageViewThumbnail"
+        android:layout_width="@dimen/movie_cover_width"
+        android:layout_height="@dimen/movie_cover_height"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="false"
+        android:scaleType="fitXY" />
+
+
+
+    <TextView
+        android:id="@+id/textViewTitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title: "
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageViewThumbnail" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Title of a movie"
+        app:layout_constraintStart_toEndOf="@+id/textViewTitleLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+         />
+
+</android.support.constraint.ConstraintLayout>
