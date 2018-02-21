@@ -6,32 +6,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <ImageView
-        android:id="@+id/imageViewThumbnail"
-        android:layout_width="@dimen/movie_cover_width"
-        android:layout_height="@dimen/movie_cover_height"
+        android:id="@+id/imageViewBackdrop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/movie_detail_backdrop_height"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="false"
         android:scaleType="fitXY" />
 
-
-
-    <TextView
-        android:id="@+id/textViewTitleLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Title: "
+    <ImageView
+        android:id="@+id/imageViewThumbnail"
+        android:layout_width="@dimen/movie_detail_poster_width"
+        android:layout_height="@dimen/movie_detail_poster_height"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="false"
+        android:scaleType="fitXY"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imageViewThumbnail" />
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="@dimen/movie_detail_poster_margin"
+        android:layout_marginLeft="@dimen/movie_detail_poster_margin" />
+
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="Title of a movie"
-        app:layout_constraintStart_toEndOf="@+id/textViewTitleLabel"
+        android:layout_margin="@dimen/movie_detail_title_margin"
         app:layout_constraintEnd_toEndOf="parent"
-         />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageViewThumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBackdrop"
+        tools:text="The Nut Job 2: Nutty by Nature" />
+
+    <TextView
+        android:id="@+id/textViewOverviewText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/movie_detail_title_margin"
+        tools:text="When the evil mayor of Oakton decides to bulldoze Liberty Park and build a dangerous amusement park in its place, Surly Squirrel and his ragtag group of animal friends need to band together to save their home, defeat the mayor, and take back the park."
+
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@id/imageViewThumbnail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </android.support.constraint.ConstraintLayout>

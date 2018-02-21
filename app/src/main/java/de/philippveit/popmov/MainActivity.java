@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverv
     }
 
     private void launchDetailActivity(int position, Movie movie) {
-        Intent intent = new Intent(this, DetailActivity.class);
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_POSITION, position);
         intent.putExtra(DetailActivity.EXTRA_MOVIE, movie);
-        startActivity(intent);
+        MainActivity.this.startActivity(intent);
     }
 
     @Override

@@ -62,8 +62,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
-        final Movie movie = movieList.get(position);
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        final int adapterPosition = holder.getAdapterPosition();
+        final Movie movie = movieList.get(adapterPosition);
         holder.title.setText(movie.getTitle());
 
         Picasso
@@ -75,13 +76,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                listener.onItemClick(position, movie);
+                listener.onItemClick(adapterPosition, movie);
             }
         });
 
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                listener.onItemClick(position,movie);
+                listener.onItemClick(adapterPosition, movie);
             }
         });
     }

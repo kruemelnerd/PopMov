@@ -195,7 +195,7 @@ public class Movie implements Parcelable{
     private void readFromParcel(Parcel in) {
         adult  = (in.readInt() == 0) ? false : true;
         backdropPath = in.readString();
-        genreIds = new ArrayList<Long>();
+        genreIds = new ArrayList<>();
         in.readList(genreIds, Movie.class.getClassLoader());
         this.id = in.readLong();
         this.originalLanguage = in.readString();
