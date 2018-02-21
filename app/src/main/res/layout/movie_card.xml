@@ -19,7 +19,7 @@
 
             <ImageView
                 android:id="@+id/movie_thumbnail_iv"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/movie_cover_width"
                 android:layout_height="@dimen/movie_cover_height"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
