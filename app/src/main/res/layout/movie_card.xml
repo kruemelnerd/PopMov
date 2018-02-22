@@ -22,8 +22,8 @@
                 android:layout_width="@dimen/movie_cover_width"
                 android:layout_height="@dimen/movie_cover_height"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:scaleType="fitXY" />
+                android:adjustViewBounds="true"
+                android:clickable="true" />
 
             <TextView
                 android:id="@+id/movie_title_tv"

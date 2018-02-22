@@ -33,7 +33,8 @@ public class MovieModel implements MainMVP.ModelOps {
         try {
             movies = JsonUtil.parseJson(json);
             for (Movie movie : movies) {
-                movie.setPosterPath(MovieUtil.normalizeMovieDbImages(movie.getPosterPath()));
+                movie.setPosterPath(MovieUtil.normalizeMovieDbImages(movie.getPosterPath(), MovieUtil.DEFAULT_MOVIE_THUMBNAIL_SIZE));
+                movie.setBackdropPath(MovieUtil.normalizeMovieDbImages(movie.getBackdropPath(), MovieUtil.DEFAULT_MOVIE_BACKPROP_SIZE));
             }
         } catch (JsonSyntaxException e) {
             Log.e(TAG, "Error during the parsing");

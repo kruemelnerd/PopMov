@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -67,9 +68,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         final Movie movie = movieList.get(adapterPosition);
         holder.title.setText(movie.getTitle());
 
+        Picasso.with(mContext).setLoggingEnabled(true);
+        Picasso.with(mContext).setIndicatorsEnabled(true);
+
         Picasso
                 .with(mContext)
                 .load(movie.getPosterPath())
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .fit()
                 .placeholder(R.drawable.progress_animation)
                 .into(holder.thumbnail);

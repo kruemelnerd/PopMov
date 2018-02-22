@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.philippveit.popmov.MVP.MainMVP;
@@ -43,6 +44,8 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
 
         Bundle data = intent.getExtras();
         Movie movie = (Movie) data.getParcelable(EXTRA_MOVIE);
+
+        //TODO: Use MVP
         showMovie(movie);
 
     }
@@ -53,18 +56,27 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
         mTextViewOverviewText.setText(movie.getOverview());
         mTextViewTitle.setText(movie.getTitle());
 
-        Picasso
-                .with(this)
+        //.memoryPolicy(MemoryPolicy.NO_STORE)
+
+        Picasso.with(this).setLoggingEnabled(true);
+        Picasso.with(this).setIndicatorsEnabled(true);
+
+        // Not working
+        Picasso.with(this)
+                .load(movie.getBackdropPath())
+                .memoryPolicy(MemoryPolicy.NO_STORE)
+                .placeholder(R.drawable.progress_animation)
+                .into(mImageViewBackdrop);
+
+
+        // Working fine
+        Picasso.with(this)
                 .load(movie.getPosterPath())
                 .fit()
                 .placeholder(R.drawable.progress_animation)
                 .into(mImageViewThumbnail);
 
-        Picasso
-                .with(this)
-                .load(movie.getBackdropPath())
-                .fit()
-                .placeholder(R.drawable.progress_animation)
-                .into(mImageViewBackdrop);
+
+
     }
 }
