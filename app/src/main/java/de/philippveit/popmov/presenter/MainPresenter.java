@@ -32,7 +32,13 @@ public class MainPresenter implements MainMVP.PresenterOps {
     }
 
     @Override
-    public void getMovie(Movie movie) {
+    public void getFavMovies() {
+        return;
+    }
 
+    @Override
+    public void getTopRatedMovies() {
+        List<Movie> movies = mMovieModel.getTopRatedMovies();
+        mMovieView.showMovies(movies);
     }
 }

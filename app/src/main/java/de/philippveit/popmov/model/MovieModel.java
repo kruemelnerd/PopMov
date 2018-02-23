@@ -30,6 +30,30 @@ public class MovieModel implements MainMVP.ModelOps {
     @Override
     public List<Movie> getPopularMovies() {
         String json = db.getJsonForPopularMovies();
+        List<Movie> movies = parseMovies(json);
+        return movies;
+    }
+
+    @Override
+    public List<Movie> getTopRatedMovies() {
+        String json = db.getJsonForRatedMovies();
+        List<Movie> movies = parseMovies(json);
+        return movies;
+
+    }
+
+    @Override
+    public List<Movie> getFavMovies() {
+        return null;
+    }
+
+    @Override
+    public Movie getSingleMovie(Movie movie) {
+        return null;
+    }
+
+
+    List<Movie> parseMovies(String json){
         List<Movie> movies;
         try {
             movies = JsonUtil.parseJson(json);
@@ -48,10 +72,5 @@ public class MovieModel implements MainMVP.ModelOps {
             movies = new ArrayList<>();
         }
         return movies;
-    }
-
-    @Override
-    public Movie getSingleMovie(Movie movie) {
-        return null;
     }
 }

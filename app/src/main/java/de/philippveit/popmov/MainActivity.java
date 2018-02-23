@@ -2,11 +2,17 @@ package de.philippveit.popmov;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +25,7 @@ import de.philippveit.popmov.view.MovieAdapter;
 public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverviewOps {
 
     private RecyclerView recyclerView;
+    private DrawerLayout mDrawerLayout;
     private MovieAdapter movieAdapter;
     private List<Movie> movieList;
 
@@ -41,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverv
             }
         };
 
-
         movieList = new ArrayList<>();
         movieAdapter = new MovieAdapter(this, movieList, listener);
 
@@ -50,8 +56,53 @@ public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverv
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(movieAdapter);
 
+        mMoviePresenter.getTopRatedMovies();
 
-        mMoviePresenter.getPopularMovies();
+        addToolbar();
+    }
+
+    private void addToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        item.setChecked(true);
+
+                        switch (item.getItemId()) {
+                            case R.id.nav_polpular_movies:
+                                mMoviePresenter.getPopularMovies();
+                                break;
+                            case R.id.nav_top_rated_movies:
+                                mMoviePresenter.getTopRatedMovies();
+                                break;
+                            case R.id.nav_favorites_movies:
+                                mMoviePresenter.getFavMovies();
+                                break;
+                        }
+                        mDrawerLayout.closeDrawers();
+                        return true;
+                    }
+                }
+        );
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(Gravity.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void launchDetailActivity(int position, Movie movie) {

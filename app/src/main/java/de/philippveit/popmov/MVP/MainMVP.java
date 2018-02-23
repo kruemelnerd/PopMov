@@ -29,7 +29,8 @@ public interface MainMVP {
     interface PresenterOps{
         void onCreate();
         void getPopularMovies();
-        void getMovie(Movie movie);
+        void getFavMovies();
+        void getTopRatedMovies();
     }
 
 
@@ -39,6 +40,8 @@ public interface MainMVP {
      */
     interface ModelOps {
         List<Movie> getPopularMovies();
+        List<Movie> getTopRatedMovies();
+        List<Movie> getFavMovies();
         Movie getSingleMovie(Movie movie);
     }
 
