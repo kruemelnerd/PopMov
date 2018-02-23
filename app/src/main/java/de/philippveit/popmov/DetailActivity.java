@@ -28,6 +28,7 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
     private TextView mTextViewTitle;
     private TextView mTextViewOverviewText;
     private TextView mTextViewRating;
+    private TextView mTextViewReleaseDate;
     private ImageView mImageViewThumbnail;
     private ImageView mImageViewBackdrop;
 
@@ -40,6 +41,7 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
         mTextViewTitle = (TextView) findViewById(R.id.textViewTitle);
         mTextViewOverviewText = (TextView) findViewById(R.id.textViewOverviewText);
         mTextViewRating = (TextView) findViewById(R.id.textViewRating);
+        mTextViewReleaseDate = (TextView) findViewById(R.id.textViewReleaseDate);
         mImageViewBackdrop = (ImageView) findViewById(R.id.imageViewBackdrop);
         mImageViewThumbnail = (ImageView) findViewById(R.id.imageViewThumbnail);
 
@@ -59,6 +61,7 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
         mTextViewOverviewText.setText(movie.getOverview());
         mTextViewTitle.setText(movie.getTitle());
         mTextViewRating.setText(movie.getVoteAverage().toString());
+        mTextViewReleaseDate.setText(movie.getReleaseDate());
 
        Picasso.with(this)
                 .load(movie.getBackdropPath())

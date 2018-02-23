@@ -2,6 +2,12 @@ package de.philippveit.popmov.util;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by pveit on 18.02.2018.
  */
@@ -29,6 +35,14 @@ public class MovieUtil {
         }else {
             return "";
         }
+    }
+
+    public static String normalizeDate(String date) throws ParseException {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Date result =  df.parse(date);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        return sdf.format(result);
     }
 
 }
