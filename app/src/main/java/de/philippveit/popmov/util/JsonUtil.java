@@ -17,6 +17,9 @@ public class JsonUtil {
     public static List<Movie> parseJson(String json) throws JsonSyntaxException {
         Gson gson = new Gson();
         MovieDbResponse movies = gson.fromJson(json, MovieDbResponse.class);
+        if(movies == null){
+            throw new JsonSyntaxException("No Movies found.");
+        }
         return movies.getMovies();
     }
 }
