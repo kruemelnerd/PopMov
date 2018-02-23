@@ -9,9 +9,9 @@ import org.apache.commons.lang.StringUtils;
 public class MovieUtil {
 
     public static final String DEFAULT_MOVIE_THUMBNAIL_SIZE = "w185"; // "w92", "w154", "w185", "w342", "w500", "w780", or "original"
-    public static final String DEFAULT_MOVIE_BACKPROP_SIZE = "w300"; //  "w300", "w780", "w1280" or "original"
+    public static final String DEFAULT_MOVIE_BACKPROP_SIZE = "w780"; //  "w300", "w780", "w1280" or "original"
 
-    private static final String movieImageUrl = "https://image.tmdb.org/t/p/";
+    private static final String movieImageUrl = "http://image.tmdb.org/t/p/";
 
     @Deprecated
     public static String normalizeMovieDbImages(String imagename) {

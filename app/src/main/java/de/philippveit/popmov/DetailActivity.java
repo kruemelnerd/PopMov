@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.philippveit.popmov.MVP.MainMVP;
@@ -62,9 +61,23 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
         Picasso.with(this).setIndicatorsEnabled(true);
 
         // Not working
-        Picasso.with(this)
+
+/*
+        Picasso.Builder builder = new Picasso.Builder(this);
+        builder.listener(new Picasso.Listener()
+        {
+            @Override
+            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception)
+            {
+                exception.printStackTrace();
+            }
+        });
+        builder.build().load(movie.getBackdropPath()).into(mImageViewBackdrop);
+*/
+
+
+       Picasso.with(this)
                 .load(movie.getBackdropPath())
-                .memoryPolicy(MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.progress_animation)
                 .into(mImageViewBackdrop);
 
