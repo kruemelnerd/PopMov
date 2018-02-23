@@ -44,7 +44,7 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
         Bundle data = intent.getExtras();
         Movie movie = (Movie) data.getParcelable(EXTRA_MOVIE);
 
-        //TODO: Use MVP
+        //Is a presenter necessary? Or is it more realistic to u
         showMovie(movie);
 
     }
@@ -55,34 +55,11 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
         mTextViewOverviewText.setText(movie.getOverview());
         mTextViewTitle.setText(movie.getTitle());
 
-        //.memoryPolicy(MemoryPolicy.NO_STORE)
-
-        Picasso.with(this).setLoggingEnabled(true);
-        Picasso.with(this).setIndicatorsEnabled(true);
-
-        // Not working
-
-/*
-        Picasso.Builder builder = new Picasso.Builder(this);
-        builder.listener(new Picasso.Listener()
-        {
-            @Override
-            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception)
-            {
-                exception.printStackTrace();
-            }
-        });
-        builder.build().load(movie.getBackdropPath()).into(mImageViewBackdrop);
-*/
-
-
        Picasso.with(this)
                 .load(movie.getBackdropPath())
                 .placeholder(R.drawable.progress_animation)
                 .into(mImageViewBackdrop);
 
-
-        // Working fine
         Picasso.with(this)
                 .load(movie.getPosterPath())
                 .fit()

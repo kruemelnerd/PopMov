@@ -22,7 +22,7 @@
         app:layout_constraintEnd_toEndOf="parent"
 
          />
-
+<!--
     <ImageView
         android:id="@+id/imageViewThumbnail"
         android:layout_width="@dimen/movie_detail_poster_width"
@@ -33,11 +33,34 @@
         android:adjustViewBounds="true"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="false"
-
+        android:elevation="3dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
        />
+-->
 
+    <android.support.v7.widget.CardView
+
+        android:id="@+id/cardViewThumbnail"
+        android:layout_width="@dimen/movie_detail_poster_width"
+        android:layout_height="@dimen/movie_detail_poster_height"
+        android:layout_marginTop="@dimen/movie_detail_poster_margin_top"
+        android:layout_marginStart="@dimen/movie_detail_poster_margin"
+        android:layout_marginLeft="@dimen/movie_detail_poster_margin"
+
+        android:layout_gravity="center_horizontal"
+        app:cardElevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@null" />
+    </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -46,8 +69,9 @@
         android:layout_margin="@dimen/movie_detail_title_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageViewThumbnail"
+        app:layout_constraintStart_toEndOf="@+id/cardViewThumbnail"
         app:layout_constraintTop_toBottomOf="@+id/imageViewBackdrop"
+        style="@style/movieDetailTitle"
         tools:text="The Nut Job 2: Nutty by Nature" />
 
     <TextView
@@ -55,12 +79,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/movie_detail_title_margin"
-        tools:text="When the evil mayor of Oakton decides to bulldoze Liberty Park and build a dangerous amusement park in its place, Surly Squirrel and his ragtag group of animal friends need to band together to save their home, defeat the mayor, and take back the park."
+        android:layout_marginTop="8dp"
 
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintTop_toBottomOf="@id/imageViewThumbnail"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnail"
+        tools:text="When the evil mayor of Oakton decides to bulldoze Liberty Park and build a dangerous amusement park in its place, Surly Squirrel and his ragtag group of animal friends need to band together to save their home, defeat the mayor, and take back the park." />
 
 </android.support.constraint.ConstraintLayout>

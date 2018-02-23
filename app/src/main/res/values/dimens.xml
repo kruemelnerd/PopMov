@@ -6,7 +6,7 @@
     <dimen name="movie_detail_backdrop_height">200dp</dimen>
     <dimen name="movie_detail_poster_height">180dp</dimen>
     <dimen name="movie_detail_poster_width">130dp</dimen>
-    <dimen name="movie_detail_poster_margin">30dp</dimen>
+    <dimen name="movie_detail_poster_margin">8dp</dimen>
     <dimen name="movie_detail_poster_margin_top">170dp</dimen>
 
     <dimen name="movie_detail_title_margin">8dp</dimen>

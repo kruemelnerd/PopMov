@@ -68,17 +68,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         final Movie movie = movieList.get(adapterPosition);
         holder.title.setText(movie.getTitle());
 
-        Picasso.with(mContext).setLoggingEnabled(true);
-        Picasso.with(mContext).setIndicatorsEnabled(true);
-
         Picasso
                 .with(mContext)
                 .load(movie.getPosterPath())
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .fit()
                 .placeholder(R.drawable.progress_animation)
                 .into(holder.thumbnail);
 
+
+        // FIXME: Two clickListener necessary? Probably not.
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 listener.onItemClick(adapterPosition, movie);

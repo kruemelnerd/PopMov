@@ -37,8 +37,6 @@ public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverv
         MovieAdapter.OnItemClickListener listener = new MovieAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, Movie movie) {
-
-                Toast.makeText(MainActivity.this, movie.getTitle(), Toast.LENGTH_SHORT).show();
                 launchDetailActivity(position, movie);
             }
         };
@@ -51,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverv
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(movieAdapter);
-
 
 
         mMoviePresenter.getPopularMovies();
