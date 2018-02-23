@@ -20,7 +20,7 @@
     <dimen name="movie_detail_ratingAll_marginTop">5dp</dimen>
     <dimen name="movie_detail_ratingAll_marginLeft">6dp</dimen>
 
-    <dimen name="movie_detail_releaseDate_margin">8dp</dimen>
+    <dimen name="movie_detail_releaseDate_margin">18dp</dimen>
 
 
     <dimen name="card_margin">5dp</dimen>
