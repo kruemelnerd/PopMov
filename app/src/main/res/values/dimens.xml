@@ -11,6 +11,14 @@
 
     <dimen name="movie_detail_title_margin">8dp</dimen>
 
+    <dimen name="movie_detail_rating_textSize">20dp</dimen>
+    <dimen name="movie_detail_rating_marginTop">12dp</dimen>
+    <dimen name="movie_detail_rating_marginBottom">8dp</dimen>
+
+    <dimen name="movie_detail_ratingAll_textSize">14dp</dimen>
+    <dimen name="movie_detail_ratingAll_marginTop">5dp</dimen>
+    <dimen name="movie_detail_ratingAll_marginLeft">6dp</dimen>
+
 
 
     <dimen name="card_margin">5dp</dimen>

@@ -5,5 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="action_add_favourite">Add to Favourites</string>
 
+    <string name="movie_thumbnail_contentDescription">Cover of the movie</string>
+    <string name="movie_backdrop_contentDescription">Bigger Cover of the movie</string>
 
+    <string name="movie_ratingAll_text">/10</string>
 </resources>

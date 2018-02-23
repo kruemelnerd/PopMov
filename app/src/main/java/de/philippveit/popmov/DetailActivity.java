@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import de.philippveit.popmov.MVP.MainMVP;
 import de.philippveit.popmov.data.Movie;
 
@@ -25,6 +27,7 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
 
     private TextView mTextViewTitle;
     private TextView mTextViewOverviewText;
+    private TextView mTextViewRating;
     private ImageView mImageViewThumbnail;
     private ImageView mImageViewBackdrop;
 
@@ -36,6 +39,7 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
 
         mTextViewTitle = (TextView) findViewById(R.id.textViewTitle);
         mTextViewOverviewText = (TextView) findViewById(R.id.textViewOverviewText);
+        mTextViewRating = (TextView) findViewById(R.id.textViewRating);
         mImageViewBackdrop = (ImageView) findViewById(R.id.imageViewBackdrop);
         mImageViewThumbnail = (ImageView) findViewById(R.id.imageViewThumbnail);
 
@@ -54,6 +58,7 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
 
         mTextViewOverviewText.setText(movie.getOverview());
         mTextViewTitle.setText(movie.getTitle());
+        mTextViewRating.setText(movie.getVoteAverage().toString());
 
        Picasso.with(this)
                 .load(movie.getBackdropPath())
@@ -65,7 +70,6 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
                 .fit()
                 .placeholder(R.drawable.progress_animation)
                 .into(mImageViewThumbnail);
-
 
 
     }
