@@ -6,9 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import de.philippveit.popmov.MVP.MainMVP;
@@ -31,6 +34,8 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
     private TextView mTextViewReleaseDate;
     private ImageView mImageViewThumbnail;
     private ImageView mImageViewBackdrop;
+    private ProgressBar mProgressBarThumbnail;
+    private ProgressBar mProgressBarBackdrop;
 
 
     @Override
@@ -48,6 +53,10 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
         mTextViewReleaseDate = (TextView) findViewById(R.id.textViewReleaseDate);
         mImageViewBackdrop = (ImageView) findViewById(R.id.imageViewBackdrop);
         mImageViewThumbnail = (ImageView) findViewById(R.id.imageViewThumbnail);
+        mProgressBarThumbnail = (ProgressBar) findViewById(R.id.progressBarThumbnail);
+        mProgressBarBackdrop = (ProgressBar) findViewById(R.id.progressBarBackdrop);
+        mProgressBarThumbnail.setVisibility(View.VISIBLE);
+        mProgressBarBackdrop.setVisibility(View.VISIBLE);
 
         Intent intent = getIntent();
 
@@ -67,16 +76,34 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
         mTextViewRating.setText(movie.getVoteAverage().toString());
         mTextViewReleaseDate.setText(movie.getReleaseDate());
 
-       Picasso.with(this)
+        Picasso.with(this)
                 .load(movie.getBackdropPath())
-                .placeholder(R.drawable.progress_animation)
-                .into(mImageViewBackdrop);
+                .into(mImageViewBackdrop, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        mProgressBarBackdrop.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        return;
+                    }
+                });
 
         Picasso.with(this)
                 .load(movie.getPosterPath())
                 .fit()
-                .placeholder(R.drawable.progress_animation)
-                .into(mImageViewThumbnail);
+                .into(mImageViewThumbnail, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        mProgressBarThumbnail.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        return;
+                    }
+                });
 
 
     }

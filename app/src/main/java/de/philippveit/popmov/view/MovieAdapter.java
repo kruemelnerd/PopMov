@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -36,12 +37,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         public TextView title;
         public ImageView thumbnail;
         public CardView cardView;
+        public ProgressBar progressBar;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.movie_title_tv);
             thumbnail = (ImageView) view.findViewById(R.id.movie_thumbnail_iv);
             cardView = (CardView) view.findViewById(R.id.card_view);
+            progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
         }
     }
 
@@ -49,7 +53,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         this.mContext = context;
         this.movieList = movies;
         this.listener = onItemClickListener;
-
     }
 
     public void setMovieList(List<Movie> movies) {
@@ -67,13 +70,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         final int adapterPosition = holder.getAdapterPosition();
         final Movie movie = movieList.get(adapterPosition);
         holder.title.setText(movie.getTitle());
+        final ProgressBar progressView = holder.progressBar;
 
         Picasso
                 .with(mContext)
                 .load(movie.getPosterPath())
                 .fit()
-                .placeholder(R.drawable.progress_animation)
-                .into(holder.thumbnail);
+                .into(holder.thumbnail, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        return;
+                    }
+                });
 
 
         // FIXME: Two clickListener necessary? Probably not.
