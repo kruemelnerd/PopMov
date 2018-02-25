@@ -2,6 +2,8 @@
 <resources>
     <dimen name="movie_cover_height">270dp</dimen>
     <dimen name="movie_cover_width">198dp</dimen>
+    <dimen name="movie_cover_height_land">300dp</dimen>
+    <dimen name="movie_cover_width_land">250dp</dimen>
 
     <dimen name="movie_detail_backdrop_height">200dp</dimen>
     <dimen name="movie_detail_poster_height">180dp</dimen>

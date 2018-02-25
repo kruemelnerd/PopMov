@@ -52,7 +52,13 @@ public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverv
         movieList = new ArrayList<>();
         movieAdapter = new MovieAdapter(this, movieList, listener);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        int spanCount = 2;
+        if (getResources().getDisplayMetrics().widthPixels > getResources().getDisplayMetrics().
+                heightPixels) {
+            //Screen is switched to Landscape
+            spanCount = 3;
+        }
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, spanCount);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(movieAdapter);
