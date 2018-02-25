@@ -3,13 +3,13 @@ package de.philippveit.popmov;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import de.philippveit.popmov.MVP.MainMVP;
 import de.philippveit.popmov.data.Movie;
@@ -37,6 +37,10 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         mTextViewTitle = (TextView) findViewById(R.id.textViewTitle);
         mTextViewOverviewText = (TextView) findViewById(R.id.textViewOverviewText);
