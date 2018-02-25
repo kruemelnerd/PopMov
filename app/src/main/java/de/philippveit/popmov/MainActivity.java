@@ -1,6 +1,8 @@
 package de.philippveit.popmov;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -63,9 +65,26 @@ public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverv
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(movieAdapter);
 
-        mMoviePresenter.getTopRatedMovies();
 
+        SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        String catMovieLoaded = sharedPreferences.getString(getString(R.string.preference_key_category_movies_loaded), getString(R.string.preference_default_category_movies_loaded) );
+
+        String pop = this.getString(R.string.preference_popular_category_movies_loaded);
+        String fav = this.getString(R.string.preference_popular_category_movies_loaded);
+
+        if(pop.equals(catMovieLoaded)){
+            mMoviePresenter.getPopularMovies();
+        }else if(fav.equals(catMovieLoaded)){
+            mMoviePresenter.getFavMovies();
+        }else{
+            mMoviePresenter.getTopRatedMovies();
+        }
         addToolbar();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     private void addToolbar() {
@@ -83,16 +102,22 @@ public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverv
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         item.setChecked(true);
+                        getSharedPreferences(getString(R.string.preference_key_category_movies_loaded), MODE_PRIVATE);
+                        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
 
                         switch (item.getItemId()) {
                             case R.id.nav_polpular_movies:
+                                preferences.edit().putString(getString(R.string.preference_key_category_movies_loaded), getString(R.string.preference_popular_category_movies_loaded)).apply();
                                 mMoviePresenter.getPopularMovies();
                                 break;
                             case R.id.nav_top_rated_movies:
+                                preferences.edit().putString(getString(R.string.preference_key_category_movies_loaded), getString(R.string.preference_top_rated_category_movies_loaded)).apply();
                                 mMoviePresenter.getTopRatedMovies();
                                 break;
                             case R.id.nav_favorites_movies:
-                                mMoviePresenter.getFavMovies();
+//                                preferences.edit().putString(getString(R.string.preference_key_category_movies_loaded), getString(R.string.preference_fav_category_movies_loaded)).apply();
+//                                mMoviePresenter.getFavMovies();
+                                showError(R.string.error_not_yet_rated);
                                 break;
                         }
                         mDrawerLayout.closeDrawers();

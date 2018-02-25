@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">PopMov</string>
 
+    <string name="preference_key_category_movies_loaded">preference_key_category_movies_loaded</string>
+    <string name="preference_default_category_movies_loaded">top_rated</string>
+    <string name="preference_top_rated_category_movies_loaded">top_rated</string>
+    <string name="preference_popular_category_movies_loaded">popular</string>
+    <string name="preference_fav_category_movies_loaded">fav</string>
 
     <string name="action_settings">Settings</string>
     <string name="action_add_favourite">Add to Favourites</string>
@@ -17,4 +22,5 @@
 
     <string name="error_loading_movies">Something went wrong while loading the movies. Sorry</string>
     <string name="error_parsing_images">Something went wrong while parsing the images.</string>
+    <string name="error_not_yet_rated">Sorry, this Feature is not yet rated.</string>
 </resources>
