@@ -97,13 +97,14 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardViewThumbnail"
-            tools:text="When the evil mayor of Oakton decides to bulldoze Liberty Park and build a dangerous amusement park in its place, Surly Squirrel and his ragtag group of animal friends need to band together to save their home, defeat the mayor, and take back the park." />
-
+            tools:text="An urban office worker finds that paper airplanes are instrumental in meeting a girl in waxs he never expected ted." />
+        <!--tools:text="When the evil mayor of Oakton decides to bulldoze Liberty Park and build a dangerous amusement park in its place, Surly Squirrel and his ragtag group of animal friends need to band together to save their home, defeat the mayor, and take back the park." />-->
 
         <TextView
             android:id="@+id/textViewReleaseDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_marginTop="@dimen/movie_detail_releaseDate_margin"
 
             app:layout_constraintTop_toBottomOf="@id/textViewOverviewText"

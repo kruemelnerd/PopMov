@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +119,11 @@ public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverv
         movieList = movies;
         movieAdapter.setMovieList(movieList);
         movieAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 }

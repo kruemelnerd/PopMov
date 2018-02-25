@@ -15,6 +15,7 @@ public interface MainMVP {
      */
     interface ViewOverviewOps {
         void showMovies(List<Movie> movies);
+        void showError(String message);
     }
 
     interface ViewDetailOps {

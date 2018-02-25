@@ -6,7 +6,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import de.philippveit.popmov.data.Movie;
 
 /**
  * Created by pveit on 18.02.2018.
@@ -24,25 +27,38 @@ public class MovieUtil {
         return normalizeMovieDbImages(imagename, DEFAULT_MOVIE_THUMBNAIL_SIZE);
     }
 
-    public static String normalizeMovieDbImages(String imagename, String size){
-        if(StringUtils.isNotEmpty(imagename)){
+    public static String normalizeMovieDbImages(String imagename, String size) {
+        if (StringUtils.isNotEmpty(imagename)) {
             StringBuilder completeImageUrl = new StringBuilder();
             completeImageUrl.append(movieImageUrl);
             completeImageUrl.append(size);
             completeImageUrl.append("/");
             completeImageUrl.append(imagename);
             return completeImageUrl.toString();
-        }else {
+        } else {
             return "";
         }
     }
 
     public static String normalizeDate(String date) throws ParseException {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        Date result =  df.parse(date);
+        Date result = df.parse(date);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         return sdf.format(result);
     }
 
+    public static List<Movie> normalizeMovies(List<Movie> movies) throws ParseException {
+        for (Movie movie : movies) {
+            normalizeMovie(movie);
+        }
+        return movies;
+    }
+
+    public static Movie normalizeMovie(Movie movie) throws ParseException {
+        movie.setPosterPath(normalizeMovieDbImages(movie.getPosterPath(), DEFAULT_MOVIE_THUMBNAIL_SIZE));
+        movie.setBackdropPath(normalizeMovieDbImages(movie.getBackdropPath(), DEFAULT_MOVIE_BACKPROP_SIZE));
+        movie.setReleaseDate(normalizeDate(movie.getReleaseDate()));
+        return movie;
+    }
 }
