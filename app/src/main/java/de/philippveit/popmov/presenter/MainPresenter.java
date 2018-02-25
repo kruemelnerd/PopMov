@@ -61,18 +61,18 @@ public class MainPresenter implements MainMVP.PresenterOps {
                     MovieUtil.normalizeMovies(movies);
                 }catch (ParseException e) {
                     e.printStackTrace();
-                    mMovieView.showError("Something went wrong with the images. Sorry");
+                    mMovieView.showErrorParsingImages();
                 }
                 mMovieView.showMovies(movies);
             }else {
-                mMovieView.showError("Something went wrong. Sorry");
+                mMovieView.showErrorLoadingMovies();
             }
         }
 
         @Override
         public void onFailure(Call<MovieDbResponse> call, Throwable t) {
             t.printStackTrace();
-            mMovieView.showError("Something went wrong. Sorry");
+            mMovieView.showErrorLoadingMovies();
         }
     }
 

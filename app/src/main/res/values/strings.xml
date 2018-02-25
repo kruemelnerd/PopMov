@@ -14,4 +14,7 @@
     <string name="nav_top_rated_movies_label">Top Rated</string>
     <string name="nav_popular_movies_label">Popular</string>
     <string name="nav_favorits_movies_label">Favorites</string>
+
+    <string name="error_loading_movies">Something went wrong while loading the movies. Sorry</string>
+    <string name="error_parsing_images">Something went wrong while parsing the images.</string>
 </resources>

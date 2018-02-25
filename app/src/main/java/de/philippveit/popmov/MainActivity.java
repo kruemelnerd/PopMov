@@ -128,8 +128,17 @@ public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverv
     }
 
     @Override
-    public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showErrorLoadingMovies(){
+        showError(R.string.error_loading_movies);
     }
 
+    @Override
+    public void showErrorParsingImages(){
+        showError(R.string.error_parsing_images);
+    }
+
+    public void showError(int id) {
+        String message = this.getString(id);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 }
