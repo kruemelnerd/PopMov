@@ -1,6 +1,9 @@
 package de.philippveit.popmov;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -14,6 +17,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.philippveit.popmov.MVP.MainMVP;
 import de.philippveit.popmov.data.Movie;
 
@@ -28,33 +33,37 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
     private static final int DEFAULT_POSITION = -1;
     private static final String TAG = "DetailActivity";
 
-    private TextView mTextViewTitle;
-    private TextView mTextViewOverviewText;
-    private TextView mTextViewRating;
-    private TextView mTextViewReleaseDate;
-    private ImageView mImageViewThumbnail;
-    private ImageView mImageViewBackdrop;
-    private ProgressBar mProgressBarThumbnail;
-    private ProgressBar mProgressBarBackdrop;
-
+    @BindView(R.id.textViewTitle)
+    TextView mTextViewTitle;
+    @BindView(R.id.textViewOverviewText)
+    TextView mTextViewOverviewText;
+    @BindView(R.id.textViewRating)
+    TextView mTextViewRating;
+    @BindView(R.id.textViewReleaseDate)
+    TextView mTextViewReleaseDate;
+    @BindView(R.id.imageViewThumbnail)
+    ImageView mImageViewThumbnail;
+    @BindView(R.id.imageViewBackdrop)
+    ImageView mImageViewBackdrop;
+    @BindView(R.id.progressBarThumbnail)
+    ProgressBar mProgressBarThumbnail;
+    @BindView(R.id.progressBarBackdrop)
+    ProgressBar mProgressBarBackdrop;
+    @BindView(R.id.imageViewPlayButton)
+    ImageView mImageViewPlayButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        mTextViewTitle = (TextView) findViewById(R.id.textViewTitle);
-        mTextViewOverviewText = (TextView) findViewById(R.id.textViewOverviewText);
-        mTextViewRating = (TextView) findViewById(R.id.textViewRating);
-        mTextViewReleaseDate = (TextView) findViewById(R.id.textViewReleaseDate);
-        mImageViewBackdrop = (ImageView) findViewById(R.id.imageViewBackdrop);
-        mImageViewThumbnail = (ImageView) findViewById(R.id.imageViewThumbnail);
-        mProgressBarThumbnail = (ProgressBar) findViewById(R.id.progressBarThumbnail);
-        mProgressBarBackdrop = (ProgressBar) findViewById(R.id.progressBarBackdrop);
+        mImageViewPlayButton.setVisibility(View.GONE);
         mProgressBarThumbnail.setVisibility(View.VISIBLE);
         mProgressBarBackdrop.setVisibility(View.VISIBLE);
 
@@ -69,7 +78,7 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
     }
 
     @Override
-    public void showMovie(Movie movie) {
+    public void showMovie(final Movie movie) {
 
         mTextViewOverviewText.setText(movie.getOverview());
         mTextViewTitle.setText(movie.getTitle());
@@ -105,6 +114,30 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
                     }
                 });
 
+        //TODO create a presenter to call theMovieDb.org-Api to check for a video Key
+        // Then call the following function from the presenter
+        showPlayImageOnBackdrop("YwBAqMDYFCU");
 
+    }
+
+    public void showPlayImageOnBackdrop(final String youtubeKey){
+        mImageViewPlayButton.setVisibility(View.VISIBLE);
+        mImageViewPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                watchYoutubeVideo(DetailActivity.this, youtubeKey);
+            }
+        });
+    }
+
+    public static void watchYoutubeVideo(Context context, String id) {
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + id));
+        try {
+            context.startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            context.startActivity(webIntent);
+        }
     }
 }

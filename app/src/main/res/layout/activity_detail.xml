@@ -50,6 +50,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+
                 <ImageView
                     android:id="@+id/imageViewBackdrop"
                     android:layout_width="match_parent"
@@ -66,6 +67,19 @@
                     app:layout_constraintTop_toTopOf="parent"
 
                     />
+
+
+                <ImageView
+                    android:id="@+id/imageViewPlayButton"
+                    android:layout_width="@dimen/movie_detail_play_width"
+                    android:layout_height="@dimen/movie_detail_play_height"
+                    android:src="@drawable/ic_play_circle"
+                    android:visibility="visible"
+                    android:tint="@color/cardview_light_background"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageViewBackdrop"
+                    app:layout_constraintEnd_toEndOf="@+id/imageViewBackdrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/cardViewThumbnail"
