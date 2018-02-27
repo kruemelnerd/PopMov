@@ -3,6 +3,7 @@ package de.philippveit.popmov.presenter;
 import de.philippveit.popmov.BuildConfig;
 import de.philippveit.popmov.MVP.MvpContract;
 import de.philippveit.popmov.data.Movie;
+import de.philippveit.popmov.data.ReviewDbResponse;
 import de.philippveit.popmov.data.Video;
 import de.philippveit.popmov.data.VideoDbResponse;
 import de.philippveit.popmov.model.MovieService;
@@ -55,6 +56,25 @@ public class DetailPresenter implements MvpContract.PresenterDetailOps {
                 return;
             }
         });
+    }
 
+    @Override
+    public void getReviews(Movie movie) {
+
+        Call<ReviewDbResponse> call = MovieService.getApi().getReviews(movie.getId().toString(), API_KEY);
+        call.enqueue(new Callback<ReviewDbResponse>() {
+            @Override
+            public void onResponse(Call<ReviewDbResponse> call, Response<ReviewDbResponse> response) {
+                ReviewDbResponse body = response.body();
+                if(body != null){
+                    mView.showReviews(body.getResults());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewDbResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

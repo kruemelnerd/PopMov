@@ -26,6 +26,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
+        <!-- Our ContentProvider -->
+        <provider
+            android:name=".contentProvider.FavoriteProvider"
+            android:authorities="de.philippveit.popmov"
+            android:exported="false" />
     </application>
 
 </manifest>

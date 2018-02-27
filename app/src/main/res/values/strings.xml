@@ -1,26 +1,23 @@
 <resources>
     <string name="app_name">PopMov</string>
-
-    <string name="preference_key_category_movies_loaded">preference_key_category_movies_loaded</string>
-    <string name="preference_default_category_movies_loaded">top_rated</string>
-    <string name="preference_top_rated_category_movies_loaded">top_rated</string>
-    <string name="preference_popular_category_movies_loaded">popular</string>
-    <string name="preference_fav_category_movies_loaded">fav</string>
-
+    <string name="preference_key_category_movies_loaded" translatable="false">preference_key_category_movies_loaded</string>
+    <string name="preference_default_category_movies_loaded" translatable="false">top_rated</string>
+    <string name="preference_top_rated_category_movies_loaded" translatable="false">top_rated</string>
+    <string name="preference_popular_category_movies_loaded" translatable="false">popular</string>
+    <string name="preference_fav_category_movies_loaded" translatable="false">fav</string>
     <string name="action_settings">Settings</string>
     <string name="action_add_favourite">Add to Favourites</string>
-
     <string name="movie_thumbnail_contentDescription">Cover of the movie</string>
     <string name="movie_backdrop_contentDescription">Bigger Cover of the movie</string>
-
     <string name="movie_ratingAll_text">/10</string>
     <string name="movie_releaseDate_label">Release Date:</string>
-
     <string name="nav_top_rated_movies_label">Top Rated</string>
     <string name="nav_popular_movies_label">Popular</string>
     <string name="nav_favorits_movies_label">Favorites</string>
-
     <string name="error_loading_movies">Something went wrong while loading the movies. Sorry</string>
     <string name="error_parsing_images">Something went wrong while parsing the images.</string>
     <string name="error_not_yet_rated">Sorry, this Feature is not yet rated.</string>
+    <string name="favorite_saved">Saved as Favorite</string>
+    <string name="favorite_deleted">Deleted as Favorite</string>
+
 </resources>
