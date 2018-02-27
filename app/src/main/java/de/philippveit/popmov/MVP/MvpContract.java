@@ -8,7 +8,7 @@ import de.philippveit.popmov.data.Movie;
  * Created by pveit on 18.02.2018.
  */
 
-public interface MainMVP {
+public interface MvpContract {
     /**
      * View mandatory methods. Available to the presenter
      *      Presenter -> View
@@ -21,6 +21,7 @@ public interface MainMVP {
 
     interface ViewDetailOps {
         void showMovie(Movie movie);
+        void showPlayImageOnBackdrop(String youtubeKey);
     }
 
 
@@ -28,12 +29,19 @@ public interface MainMVP {
      * Operations offered from Presenter to View
      *      View -> Presenter
      */
-    interface PresenterOps{
+    interface PresenterMainOps {
         void onCreate();
         void getPopularMovies();
         void getFavMovies();
         void getTopRatedMovies();
     }
+
+    interface PresenterDetailOps {
+        void onCreate();
+        void getVideo(Movie movie);
+    }
+
+
 
 
     /**
@@ -46,7 +54,6 @@ public interface MainMVP {
         List<Movie> getFavMovies();
         Movie getSingleMovie(Movie movie);
     }
-
 
 
 }

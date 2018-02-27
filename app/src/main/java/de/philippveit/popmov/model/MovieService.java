@@ -1,10 +1,12 @@
 package de.philippveit.popmov.model;
 
 import de.philippveit.popmov.data.MovieDbResponse;
+import de.philippveit.popmov.data.VideoDbResponse;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -23,6 +25,9 @@ public class MovieService {
 
         @GET("/3/movie/popular")
         Call<MovieDbResponse> getPopularMovies(@Query("api_key") String apiKey, @Query("language") String language, @Query("page") Integer page);
+
+        @GET("/3/movie/{movie_id}/videos")
+        Call<VideoDbResponse> getVideo(@Path("movie_id") String movieId, @Query("api_key") String apiKey);
     }
 
     public static TheMovieDbOrgRestClient getApi() {

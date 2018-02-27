@@ -19,19 +19,22 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.philippveit.popmov.MVP.MainMVP;
+import de.philippveit.popmov.MVP.MvpContract;
 import de.philippveit.popmov.data.Movie;
+import de.philippveit.popmov.presenter.DetailPresenter;
 
 /**
  * Created by pveit on 20.02.2018.
  */
 
-public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDetailOps {
+public class DetailActivity extends AppCompatActivity implements MvpContract.ViewDetailOps {
 
     public static final String EXTRA_POSITION = "extra_position";
     public static final String EXTRA_MOVIE = "extra_movie";
     private static final int DEFAULT_POSITION = -1;
     private static final String TAG = "DetailActivity";
+
+    private MvpContract.PresenterDetailOps mMoviePresenter;
 
     @BindView(R.id.textViewTitle)
     TextView mTextViewTitle;
@@ -57,6 +60,7 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
+        mMoviePresenter = new DetailPresenter(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -85,42 +89,34 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.ViewDet
         mTextViewRating.setText(movie.getVoteAverage().toString());
         mTextViewReleaseDate.setText(movie.getReleaseDate());
 
-        Picasso.with(this)
-                .load(movie.getBackdropPath())
-                .into(mImageViewBackdrop, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        mProgressBarBackdrop.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError() {
-                        return;
-                    }
-                });
-
-        Picasso.with(this)
-                .load(movie.getPosterPath())
-                .fit()
-                .into(mImageViewThumbnail, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        mProgressBarThumbnail.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError() {
-                        return;
-                    }
-                });
+        loadImage(movie.getPosterPath(), mImageViewThumbnail, mProgressBarThumbnail);
+        loadImage(movie.getBackdropPath(), mImageViewBackdrop, mProgressBarBackdrop);
 
         //TODO create a presenter to call theMovieDb.org-Api to check for a video Key
         // Then call the following function from the presenter
-        showPlayImageOnBackdrop("YwBAqMDYFCU");
-
+        //showPlayImageOnBackdrop("YwBAqMDYFCU");
+        mMoviePresenter.getVideo(movie);
     }
 
-    public void showPlayImageOnBackdrop(final String youtubeKey){
+    private void loadImage(String path, ImageView into, final ProgressBar progressBar) {
+        Picasso.with(this)
+                .load(path)
+                .fit()
+                .into(into, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        return;
+                    }
+                });
+    }
+
+    @Override
+    public void showPlayImageOnBackdrop(final String youtubeKey) {
         mImageViewPlayButton.setVisibility(View.VISIBLE);
         mImageViewPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override

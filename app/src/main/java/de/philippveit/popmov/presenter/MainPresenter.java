@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import de.philippveit.popmov.BuildConfig;
-import de.philippveit.popmov.MVP.MainMVP;
+import de.philippveit.popmov.MVP.MvpContract;
 import de.philippveit.popmov.data.Movie;
 import de.philippveit.popmov.data.MovieDbResponse;
 import de.philippveit.popmov.model.MovieService;
@@ -17,12 +17,12 @@ import retrofit2.Response;
  * Created by pveit on 18.02.2018.
  */
 
-public class MainPresenter implements MainMVP.PresenterOps {
+public class MainPresenter implements MvpContract.PresenterMainOps {
 
-    private MainMVP.ViewOverviewOps mMovieView;
+    private MvpContract.ViewOverviewOps mMovieView;
     private String apiKey;
 
-    public MainPresenter(MainMVP.ViewOverviewOps mMovieView) {
+    public MainPresenter(MvpContract.ViewOverviewOps mMovieView) {
         this.mMovieView = mMovieView;
         this.apiKey = BuildConfig.TMDBORG_API_KEY;
     }

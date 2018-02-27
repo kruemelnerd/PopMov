@@ -20,19 +20,19 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.philippveit.popmov.MVP.MainMVP;
+import de.philippveit.popmov.MVP.MvpContract;
 import de.philippveit.popmov.data.Movie;
 import de.philippveit.popmov.presenter.MainPresenter;
 import de.philippveit.popmov.view.MovieAdapter;
 
-public class MainActivity extends AppCompatActivity implements MainMVP.ViewOverviewOps {
+public class MainActivity extends AppCompatActivity implements MvpContract.ViewOverviewOps {
 
     private RecyclerView recyclerView;
     private DrawerLayout mDrawerLayout;
     private MovieAdapter movieAdapter;
     private List<Movie> movieList;
 
-    private MainMVP.PresenterOps mMoviePresenter;
+    private MvpContract.PresenterMainOps mMoviePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
