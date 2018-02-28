@@ -162,15 +162,15 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         return getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI, values);
     }
 
-    private void loadImage(String path, ImageView into, final ProgressBar progressBar) {
+    private void loadImage(String path, ImageView intoImageView, final ProgressBar progressBar) {
         if (StringUtils.isBlank(path)) {
             path = "isEmpty";
         }
         Picasso.with(this)
                 .load(path)
                 .fit()
-                .error(R.drawable.ic_thumb_up)
-                .into(into, new Callback() {
+                .error(R.drawable.ic_thumb_down)
+                .into(intoImageView, new Callback() {
                     @Override
                     public void onSuccess() {
                         progressBar.setVisibility(View.GONE);
