@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.List;
 
 import de.philippveit.popmov.R;
@@ -71,33 +73,40 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         final Movie movie = movieList.get(adapterPosition);
         holder.title.setText(movie.getTitle());
         final ProgressBar progressView = holder.progressBar;
+        String posterPath = movie.getPosterPath();
+        if (StringUtils.isBlank(posterPath)) {
+            posterPath = "isEmpty";
+        }
+            Picasso
+                    .with(mContext)
+                    .load(posterPath)
+                    .fit()
+                    .error(R.drawable.ic_thumb_up)
+                    .into(holder.thumbnail, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            progressView.setVisibility(View.GONE);
+                        }
 
-        Picasso
-                .with(mContext)
-                .load(movie.getPosterPath())
-                .fit()
-                .into(holder.thumbnail, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        progressView.setVisibility(View.GONE);
-                    }
+                        @Override
+                        public void onError() {
+                            return;
+                        }
+                    });
 
-                    @Override
-                    public void onError() {
-                        return;
-                    }
-                });
 
 
         // FIXME: Two clickListener necessary? Probably not.
         holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 listener.onItemClick(adapterPosition, movie);
             }
         });
 
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 listener.onItemClick(adapterPosition, movie);
             }
         });

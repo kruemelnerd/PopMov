@@ -48,6 +48,39 @@ public class Movie implements Parcelable{
     private Long voteCount;
 
 
+    public Movie(Boolean adult, String backdropPath, List<Long> genreIds, Long id, String originalLanguage, String originalTitle, String overview, Double popularity, String posterPath, String releaseDate, String title, Boolean video, Double voteAverage, Long voteCount) {
+        this.adult = adult;
+        this.backdropPath = backdropPath;
+        this.genreIds = genreIds;
+        this.id = id;
+        this.originalLanguage = originalLanguage;
+        this.originalTitle = originalTitle;
+        this.overview = overview;
+        this.popularity = popularity;
+        this.posterPath = posterPath;
+        this.releaseDate = releaseDate;
+        this.title = title;
+        this.video = video;
+        this.voteAverage = voteAverage;
+        this.voteCount = voteCount;
+    }
+    public Movie() {
+        this.adult = false;
+        this.backdropPath = "";
+        this.genreIds = new ArrayList<>();
+        this.id = 0L;
+        this.originalLanguage = "";
+        this.originalTitle = "";
+        this.overview = "";
+        this.popularity = 0D;
+        this.posterPath = "";
+        this.releaseDate = "";
+        this.title = "";
+        this.video = false;
+        this.voteAverage = 0D;
+        this.voteCount = 0L;
+    }
+
     public Boolean getAdult() {
         return adult;
     }

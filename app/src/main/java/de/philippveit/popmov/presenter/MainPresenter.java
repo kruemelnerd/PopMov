@@ -38,11 +38,6 @@ public class MainPresenter implements MvpContract.PresenterMainOps {
         call.enqueue(new MovieCallback());
     }
 
-    @Override
-    public void getFavMovies() {
-        // Not yet implemented
-        return;
-    }
 
     @Override
     public void getTopRatedMovies() {

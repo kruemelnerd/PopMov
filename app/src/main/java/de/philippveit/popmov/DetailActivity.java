@@ -18,8 +18,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -116,12 +119,13 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
             @Override
             public void onClick(View v) {
                 String messageText;
-                if(isFavorite){
+                if (isFavorite) {
                     //Delete Favorite
                     getContentResolver().delete(FavoriteContract.FavoriteEntry.buildFavoriteUriWithId(movie.getId()), null, null);
-                    messageText = getString(R.string.favorite_deleted);;
+                    messageText = getString(R.string.favorite_deleted);
+                    ;
                     isFavorite = false;
-                }else{
+                } else {
                     //Save Favorite
                     Uri uri = insertNewFavorite(movie);
                     messageText = getString(R.string.favorite_saved);
@@ -133,31 +137,39 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         });
     }
 
-    private void displayIsFavorite(Movie movie){
+    private void displayIsFavorite(Movie movie) {
         Cursor cursor = getContentResolver().query(FavoriteContract.FavoriteEntry.buildFavoriteUriWithId(movie.getId()), null, null, null, null);
         isFavorite = false;
         mImageButtonFavorite.setImageResource(R.drawable.ic_heart_outline);
-        if(cursor.getCount() != 0){
+        if (cursor.getCount() != 0) {
             isFavorite = true;
             mImageButtonFavorite.setImageResource(R.drawable.ic_heart);
+
         }
     }
 
-    private Uri insertNewFavorite(Movie movie){
+    private Uri insertNewFavorite(Movie movie) {
         ContentValues values = new ContentValues();
         values.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID, movie.getId());
+        values.put(FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
         values.put(FavoriteContract.FavoriteEntry.COLUMN_TITLE, movie.getTitle());
         values.put(FavoriteContract.FavoriteEntry.COLUMN_PLOT, movie.getOverview());
         values.put(FavoriteContract.FavoriteEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
-        values.put(FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
+
+        String json = new Gson().toJson(movie);
+        values.put(FavoriteContract.FavoriteEntry.COLUMN_JSON, json);
 
         return getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI, values);
     }
 
     private void loadImage(String path, ImageView into, final ProgressBar progressBar) {
+        if (StringUtils.isBlank(path)) {
+            path = "isEmpty";
+        }
         Picasso.with(this)
                 .load(path)
                 .fit()
+                .error(R.drawable.ic_thumb_up)
                 .into(into, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -172,12 +184,12 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     }
 
     @Override
-    public void showReviews(List<Review> reviews){
+    public void showReviews(List<Review> reviews) {
 
         for (Review review : reviews) {
             StringBuilder completeReview = new StringBuilder((String) mTextViewReviews.getText());
             completeReview.append(System.getProperty("line.separator"));
-            completeReview.append(review.getAuthor()+":" + System.getProperty("line.separator"));
+            completeReview.append(review.getAuthor() + ":" + System.getProperty("line.separator"));
             completeReview.append(review.getContent());
             completeReview.append(System.getProperty("line.separator"));
             mTextViewReviews.setText(completeReview.toString());

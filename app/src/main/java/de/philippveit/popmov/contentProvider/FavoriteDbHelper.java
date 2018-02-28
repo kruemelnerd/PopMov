@@ -12,7 +12,7 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
 
     public final static String DATABASE_NAME = "favorite_movies.db";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public FavoriteDbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -25,9 +25,10 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
                         FavoriteContract.FavoriteEntry._ID      + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID + " TEXT NOT NULL, " +
                         FavoriteContract.FavoriteEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
-                        FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE + " INTEGER NOT NULL, " +
+                        FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
                         FavoriteContract.FavoriteEntry.COLUMN_VOTE_AVERAGE + " INTEGER NOT NULL, " +
-                        FavoriteContract.FavoriteEntry.COLUMN_PLOT + " TEXT NOT NULL);";
+                        FavoriteContract.FavoriteEntry.COLUMN_PLOT + " TEXT NOT NULL, " +
+                        FavoriteContract.FavoriteEntry.COLUMN_JSON + " TEXT NOT NULL);";
         db.execSQL(SQL_CREATE_FAVORITE_TABLE);
 
     }

@@ -34,7 +34,6 @@ public interface MvpContract {
     interface PresenterMainOps {
         void onCreate();
         void getPopularMovies();
-        void getFavMovies();
         void getTopRatedMovies();
     }
 
