@@ -36,8 +36,10 @@ import de.philippveit.popmov.MVP.MvpContract;
 import de.philippveit.popmov.contentProvider.FavoriteContract;
 import de.philippveit.popmov.data.Movie;
 import de.philippveit.popmov.data.Review;
+import de.philippveit.popmov.data.Video;
 import de.philippveit.popmov.presenter.DetailPresenter;
 import de.philippveit.popmov.view.ReviewAdapter;
+import de.philippveit.popmov.view.TrailerAdapter;
 
 /**
  * Created by pveit on 20.02.2018.
@@ -62,8 +64,6 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     TextView mTextViewReleaseDate;
 //    @BindView(R.id.textViewReviews)
 //    TextView mTextViewReviews;
-    @BindView(R.id.recyclerViewReviews)
-    RecyclerView mRecyclerViewReviews;
     @BindView(R.id.imageViewThumbnail)
     ImageView mImageViewThumbnail;
     @BindView(R.id.imageViewBackdrop)
@@ -77,9 +77,16 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     @BindView(R.id.imageButtonFavorite)
     ImageButton mImageButtonFavorite;
 
+    @BindView(R.id.recyclerViewReviews)
+    RecyclerView mRecyclerViewReviews;
+    @BindView(R.id.recyclerViewTrailer)
+    RecyclerView mRecyclerViewTrailer;
+
     private boolean isFavorite;
     private List<Review> mReviewList;
     private ReviewAdapter mReviewAdapter;
+    private List<Video> mTrailerList;
+    private TrailerAdapter mTrailerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,6 +101,7 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
 
         initToolbar();
         initReviews();
+        initTrailer();
 
         Intent intent = getIntent();
 
@@ -110,6 +118,22 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void initTrailer(){
+
+        TrailerAdapter.OnClickListener onClickListener = new TrailerAdapter.OnClickListener() {
+            @Override
+            public void onItemClick(int position, Video video) {
+                watchYoutubeVideo(DetailActivity.this, video.getKey());
+            }
+        };
+        mTrailerList = new ArrayList<>();
+        mTrailerAdapter = new TrailerAdapter(this, mTrailerList, onClickListener);
+        mRecyclerViewTrailer.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerViewTrailer.setItemAnimator(new DefaultItemAnimator()  );
+        mRecyclerViewTrailer.setAdapter(mTrailerAdapter);
+
     }
 
     private void initReviews(){
@@ -222,6 +246,16 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     }
 
     @Override
+    public void showTrailer(List<Video> trailer){
+        if(!trailer.isEmpty()){
+            showPlayImageOnBackdrop(trailer.get(0).getKey());
+            mTrailerList = trailer;
+            mTrailerAdapter.setmTrailerList(mTrailerList);
+            mTrailerAdapter.notifyDataSetChanged();
+        }
+    }
+
+
     public void showPlayImageOnBackdrop(final String youtubeKey) {
         mImageViewPlayButton.setVisibility(View.VISIBLE);
         mImageViewPlayButton.setOnClickListener(new View.OnClickListener() {

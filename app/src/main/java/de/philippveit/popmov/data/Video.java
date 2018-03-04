@@ -37,6 +37,8 @@ public class Video {
     @Expose
     private String type;
 
+    private String thumbnailUrl;
+
     public String getId() {
         return id;
     }
@@ -101,8 +103,16 @@ public class Video {
         this.type = type;
     }
 
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("iso6391", iso6391).append("iso31661", iso31661).append("key", key).append("name", name).append("site", site).append("size", size).append("type", type).toString();
+        return new ToStringBuilder(this).append("id", id).append("iso6391", iso6391).append("iso31661", iso31661).append("key", key).append("name", name).append("site", site).append("size", size).append("type", type).append("thumbnailUrl", thumbnailUrl).toString();
     }
 }

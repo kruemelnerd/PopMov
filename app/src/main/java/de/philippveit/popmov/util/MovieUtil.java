@@ -22,9 +22,11 @@ public class MovieUtil {
 
     private static final String movieImageUrl = "http://image.tmdb.org/t/p/";
 
-    @Deprecated
-    public static String normalizeMovieDbImages(String imagename) {
-        return normalizeMovieDbImages(imagename, DEFAULT_MOVIE_THUMBNAIL_SIZE);
+    private static final String youtubeUrl = "https://img.youtube.com/vi/{video_key}/0.jpg";
+
+    public static String normalizeYoutubeLink(String videoKey) {
+
+        return youtubeUrl.replace("{video_key}", videoKey);
     }
 
     public static String normalizeMovieDbImages(String imagename, String size) {

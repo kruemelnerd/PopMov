@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.philippveit.popmov.data.Movie;
 import de.philippveit.popmov.data.Review;
+import de.philippveit.popmov.data.Video;
 
 /**
  * Created by pveit on 18.02.2018.
@@ -23,7 +24,7 @@ public interface MvpContract {
     interface ViewDetailOps {
         void showMovie(Movie movie);
         void showReviews(List<Review> reviews);
-        void showPlayImageOnBackdrop(String youtubeKey);
+        void showTrailer(List<Video> trailer);
     }
 
 

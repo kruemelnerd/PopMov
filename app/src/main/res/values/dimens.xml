@@ -26,6 +26,9 @@
 
     <dimen name="movie_detail_releaseDate_margin">18dp</dimen>
 
+    <dimen name="movie_detail_trailer_height">100dp</dimen>
+    <dimen name="movie_detail_trailer_width">150dp</dimen>
+
 
     <dimen name="card_margin">5dp</dimen>
     <dimen name="card_movie_radius">0dp</dimen>

@@ -1,0 +1,49 @@
+<android.support.constraint.ConstraintLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/imageViewTrailerThumbnail"
+        android:layout_width="@dimen/movie_detail_trailer_width"
+        android:layout_height="@dimen/movie_detail_trailer_height"
+        android:adjustViewBounds="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="false"
+        android:contentDescription="@string/movie_backdrop_contentDescription"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+
+    <ProgressBar
+        android:id="@+id/progressBarTrailer"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="@dimen/movie_detail_trailer_width"
+        android:layout_height="@dimen/movie_detail_trailer_height"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewTrailerThumbnail"
+        app:layout_constraintEnd_toEndOf="@id/imageViewTrailerThumbnail"
+        app:layout_constraintStart_toStartOf="@id/imageViewTrailerThumbnail"
+        app:layout_constraintTop_toTopOf="@id/imageViewTrailerThumbnail" />
+
+
+    <ImageView
+        android:id="@+id/imageViewThumbnailPlayButton"
+        android:layout_width="@dimen/movie_detail_trailer_width"
+        android:layout_height="@dimen/movie_detail_trailer_height"
+        android:src="@drawable/ic_play_circle"
+        android:tint="@color/cardview_light_background"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewTrailerThumbnail"
+        app:layout_constraintEnd_toEndOf="@id/imageViewTrailerThumbnail"
+        app:layout_constraintStart_toStartOf="@id/imageViewTrailerThumbnail"
+        app:layout_constraintTop_toTopOf="@id/imageViewTrailerThumbnail" />
+</android.support.constraint.ConstraintLayout>
