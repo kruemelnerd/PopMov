@@ -79,6 +79,24 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/imageButtonFavorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:src="@drawable/ic_heart_outline"
+                    android:tint="@color/cardview_light_background"
+                    app:backgroundTint="@color/colorAccent"
+                    app:borderWidth="0dp"
+                    app:elevation="5dp"
+                    app:layout_anchor="@id/imageViewBackdrop"
+                    app:layout_anchorGravity="bottom|right|end"
+                    app:layout_constraintBottom_toBottomOf="@id/imageViewBackdrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.85"
+                    app:layout_constraintStart_toStartOf="@id/imageViewBackdrop"
+                    app:layout_constraintTop_toBottomOf="@id/imageViewBackdrop" />
+
                 <android.support.v7.widget.CardView
                     android:id="@+id/cardViewThumbnail"
                     android:layout_width="@dimen/movie_detail_poster_width"
@@ -87,8 +105,8 @@
                     android:layout_marginLeft="@dimen/movie_detail_poster_margin"
                     android:layout_marginStart="@dimen/movie_detail_poster_margin"
                     android:layout_marginTop="@dimen/movie_detail_poster_margin_top"
-                    app:cardElevation="5dp"
                     app:borderWidth="0dp"
+                    app:cardElevation="5dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -169,9 +187,7 @@
                     android:id="@+id/textViewReleaseDateLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_marginTop="@dimen/movie_detail_releaseDate_margin"
-
                     android:text="@string/movie_releaseDate_label"
                     app:layout_constraintBottom_toTopOf="@+id/textViewReviews"
                     app:layout_constraintStart_toStartOf="@id/textViewOverviewText"
@@ -186,7 +202,7 @@
                     app:layout_constraintTop_toTopOf="@id/textViewReleaseDateLabel"
                     tools:text="01.12.1291" />
 
-                <TextView
+               <!-- <TextView
                     android:id="@+id/textViewReviews"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -196,36 +212,18 @@
                     app:layout_constraintStart_toStartOf="@id/textViewReleaseDateLabel"
                     app:layout_constraintTop_toBottomOf="@id/textViewReleaseDate"
                     tools:text="Last time I watched the Ben-Hur with Charlton Heston the thought did not cross my mind that perhaps the world needed another version of the story directed by the guy who brought us Abraham Lincoln: Vampire Hunter and that weird movie where they make bullets bend.\r\n\r\nAnyway, the Heston version is one of my favorite movies. I saw it when I was 8 and two times when I was about 20. I love it and quote it all the time.\r\n\r\nBut this is not a review of that version because (surprise!) it is not that version. This is a review of the 2016 version and I don't feel it is fair to give this movie a bad rating simply because it was an unnecessary remake. In case you are wondering, this is the sixth version of Ben-Hur.\r\n\r\nThe story follows Judah Ben-Hur, a Jewish prince in Jerusalem at the time of Christ, and his adopted Roman brother Massala. They love each other but they get in the middle of an attempted assassination on a Roman leader and wind up on opposing sides. They both feel they are in the right, get in a very sticky situation, and thus begins an 5 year journey of survival, revenge, forgiveness.\r\n\r\nI liked the movie. The chariot race was thrilling. I was worried about it because the trailer showed a scene which an obvious CGI horse running through the stands. To my delight that was the only part that really used a CGI horse (that I could tell, anyway). The rest of the race was intense even though I already knew how it was going to end.\r\n\r\nThe movie focuses very heavily on the relationship between Massala and Judah as well as Massala and the rest of the Hur family. Massala's intentions and actions were understandable and he wasn't just some evil man who betrayed his family.\r\n\r\nThe main actors and actresses do a good (not great) job. I felt Morgan Freeman may have phoned it in a little, but he delivered one of my favorite lines of the movie. My favorite actors were the slave drivers on the galley along with the drummer. They have small roles but I loved them.\r\n\r\nI didn't care for the Jesus scenes though. He is a hard character to portray, and I just didn't like it when he spoke. I'm probably picky, but I would have preferred to hear him speak in King James English or not at all (like in the Heston version). I just felt something was off with the scenes and they could have been more powerful.\r\n\r\nOverall, I felt it was a pretty good movie that succeeds in many aspects chiefly with the themes of revenge/forgiveness and delivers one exciting race. It's not perfect but a good movie overall." />
+-->
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/imageButtonFavorite"
-                    android:layout_width="wrap_content"
+               <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewReviews"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:borderWidth="0dp"
-                    app:elevation="5dp"
-                    android:clickable="true"
-                    android:src="@drawable/ic_heart_outline"
-                    app:layout_anchor="@id/imageViewBackdrop"
-                    app:layout_anchorGravity="bottom|right|end"
-                    app:layout_constraintBottom_toBottomOf="@id/imageViewBackdrop"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.85"
-                    app:layout_constraintStart_toStartOf="@id/imageViewBackdrop"
-                    app:layout_constraintTop_toBottomOf="@id/imageViewBackdrop"
-                    app:backgroundTint="@color/colorAccent"
-                    android:tint="@color/cardview_light_background"
-                    />
+                    android:clipToPadding="false"
+                    android:scrollbars="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewOverviewText"
+                    app:layout_constraintStart_toStartOf="@id/textViewReleaseDateLabel"
+                    app:layout_constraintTop_toBottomOf="@id/textViewReleaseDate" />
 
-                <!--<ImageButton
-                    android:id="@+id/imageButtonFavorite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toTopOf="@+id/textViewOverviewText"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textViewRatingAll"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-                    android:background="?android:selectableItemBackground"
-                    android:src="@drawable/ic_heart_outline" />-->
             </android.support.constraint.ConstraintLayout>
         </ScrollView>
     </RelativeLayout>

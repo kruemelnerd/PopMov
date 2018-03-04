@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
@@ -24,6 +27,7 @@ import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,6 +37,7 @@ import de.philippveit.popmov.contentProvider.FavoriteContract;
 import de.philippveit.popmov.data.Movie;
 import de.philippveit.popmov.data.Review;
 import de.philippveit.popmov.presenter.DetailPresenter;
+import de.philippveit.popmov.view.ReviewAdapter;
 
 /**
  * Created by pveit on 20.02.2018.
@@ -55,8 +60,10 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     TextView mTextViewRating;
     @BindView(R.id.textViewReleaseDate)
     TextView mTextViewReleaseDate;
-    @BindView(R.id.textViewReviews)
-    TextView mTextViewReviews;
+//    @BindView(R.id.textViewReviews)
+//    TextView mTextViewReviews;
+    @BindView(R.id.recyclerViewReviews)
+    RecyclerView mRecyclerViewReviews;
     @BindView(R.id.imageViewThumbnail)
     ImageView mImageViewThumbnail;
     @BindView(R.id.imageViewBackdrop)
@@ -71,7 +78,8 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     ImageButton mImageButtonFavorite;
 
     private boolean isFavorite;
-
+    private List<Review> mReviewList;
+    private ReviewAdapter mReviewAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,14 +88,12 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         ButterKnife.bind(this);
         mMoviePresenter = new DetailPresenter(this);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
         mImageViewPlayButton.setVisibility(View.GONE);
         mProgressBarThumbnail.setVisibility(View.VISIBLE);
         mProgressBarBackdrop.setVisibility(View.VISIBLE);
+
+        initToolbar();
+        initReviews();
 
         Intent intent = getIntent();
 
@@ -97,6 +103,21 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         //Is a presenter necessary? Or is it more realistic to u
         showMovie(movie);
 
+    }
+
+    private void initToolbar(){
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void initReviews(){
+        mReviewList = new ArrayList<>();
+        mReviewAdapter = new ReviewAdapter(this, mReviewList);
+        mRecyclerViewReviews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerViewReviews.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerViewReviews.setAdapter(mReviewAdapter);
     }
 
     @Override
@@ -186,14 +207,18 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     @Override
     public void showReviews(List<Review> reviews) {
 
-        for (Review review : reviews) {
-            StringBuilder completeReview = new StringBuilder((String) mTextViewReviews.getText());
-            completeReview.append(System.getProperty("line.separator"));
-            completeReview.append(review.getAuthor() + ":" + System.getProperty("line.separator"));
-            completeReview.append(review.getContent());
-            completeReview.append(System.getProperty("line.separator"));
-            mTextViewReviews.setText(completeReview.toString());
-        }
+//        for (Review review : reviews) {
+//            StringBuilder completeReview = new StringBuilder((String) mTextViewReviews.getText());
+//            completeReview.append(System.getProperty("line.separator"));
+//            completeReview.append(review.getAuthor() + ":" + System.getProperty("line.separator"));
+//            completeReview.append(review.getContent());
+//            completeReview.append(System.getProperty("line.separator"));
+//            mTextViewReviews.setText(completeReview.toString());
+//        }
+
+        mReviewList = reviews;
+        mReviewAdapter.setReviewList(mReviewList);
+        mReviewAdapter.notifyDataSetChanged();
     }
 
     @Override
