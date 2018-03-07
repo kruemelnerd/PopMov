@@ -31,7 +31,11 @@ repositories {
 def getApiKey(){
     def Properties props = new Properties()
     props.load(new FileInputStream(new File('secrets.properties')))
-    return props['TMDBORG_API_KEY']
+    def key = props['TMDBORG_API_KEY']
+    if(key == null || "".equals(key)) {
+        key = "$System.env.TMDBORG_API_KEY"
+    }
+    return key
 }
 
 dependencies {
