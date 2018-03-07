@@ -42,33 +42,11 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mMoviePresenter = new MainPresenter(this);
 
-        recyclerView = (RecyclerView) findViewById(R.id.mainActivity_recycler_view);
-
-        //listener for onClick
-        MovieAdapter.OnItemClickListener listener = new MovieAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, Movie movie) {
-                launchDetailActivity(position, movie);
-            }
-        };
-
-        movieList = new ArrayList<>();
-        movieAdapter = new MovieAdapter(this, movieList, listener);
-
-        int spanCount = 2;
-        if (getResources().getDisplayMetrics().widthPixels > getResources().getDisplayMetrics().
-                heightPixels) {
-            //Screen is switched to Landscape
-            spanCount = 3;
-        }
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, spanCount);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(movieAdapter);
-
+        initToolbar();
+        initDrawer();
+        initRecyclerView();
 
         SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
         String catMovieLoaded = sharedPreferences.getString(getString(R.string.preference_key_category_movies_loaded), getString(R.string.preference_default_category_movies_loaded));
@@ -83,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
         } else {
             mMoviePresenter.getTopRatedMovies();
         }
-        addToolbar();
+
     }
 
     @Override
@@ -91,13 +69,15 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
         super.onDestroy();
     }
 
-    private void addToolbar() {
+    private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+    }
 
+    private void initDrawer() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
@@ -130,6 +110,32 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
         );
     }
 
+    private void initRecyclerView(){
+        recyclerView = (RecyclerView) findViewById(R.id.mainActivity_recycler_view);
+
+        //listener for onClick
+        MovieAdapter.OnItemClickListener listener = new MovieAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, Movie movie) {
+                launchDetailActivity(position, movie);
+            }
+        };
+
+        movieList = new ArrayList<>();
+        movieAdapter = new MovieAdapter(this, movieList, listener);
+
+        int spanCount = 2;
+        if (getResources().getDisplayMetrics().widthPixels > getResources().getDisplayMetrics().
+                heightPixels) {
+            //Screen is switched to Landscape
+            spanCount = 3;
+        }
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, spanCount);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(movieAdapter);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -158,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
     public void getFavorites() {
         Cursor cursor = getContentResolver().query(FavoriteContract.FavoriteEntry.CONTENT_URI, null, null, null, null);
         List<Movie> favoriteMovies = new ArrayList<>();
-        while (cursor.moveToNext()) {
+        while (cursor != null && cursor.moveToNext()) {
             int indexJson = cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_JSON);
             String json = cursor.getString(indexJson);
             Movie movie = new Gson().fromJson(json, Movie.class);
