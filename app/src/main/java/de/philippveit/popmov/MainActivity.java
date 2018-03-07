@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -31,12 +32,15 @@ import de.philippveit.popmov.view.MovieAdapter;
 
 public class MainActivity extends AppCompatActivity implements MvpContract.ViewOverviewOps {
 
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
     private DrawerLayout mDrawerLayout;
-    private MovieAdapter movieAdapter;
-    private List<Movie> movieList;
-
+    private MovieAdapter mMovieAdapter;
+    private List<Movie> mMovieList;
     private MvpContract.PresenterMainOps mMoviePresenter;
+
+    private static int viewPosition = -1;
+    private static int viewTop = -1;
+    private static final String MOVIE_LIST_PARCELABLE = "movie_list_parcelable";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,25 +52,37 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
         initDrawer();
         initRecyclerView();
 
-        SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
-        String catMovieLoaded = sharedPreferences.getString(getString(R.string.preference_key_category_movies_loaded), getString(R.string.preference_default_category_movies_loaded));
+        if (savedInstanceState == null) {
+            SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+            String catMovieLoaded = sharedPreferences.getString(getString(R.string.preference_key_category_movies_loaded), getString(R.string.preference_default_category_movies_loaded));
 
-        String pop = this.getString(R.string.preference_popular_category_movies_loaded);
-        String fav = this.getString(R.string.preference_fav_category_movies_loaded);
+            String pop = this.getString(R.string.preference_popular_category_movies_loaded);
+            String fav = this.getString(R.string.preference_fav_category_movies_loaded);
 
-        if (pop.equals(catMovieLoaded)) {
-            mMoviePresenter.getPopularMovies();
-        } else if (fav.equals(catMovieLoaded)) {
-            getFavorites();
+            if (pop.equals(catMovieLoaded)) {
+                mMoviePresenter.getPopularMovies();
+            } else if (fav.equals(catMovieLoaded)) {
+                getFavorites();
+            } else {
+                mMoviePresenter.getTopRatedMovies();
+            }
         } else {
-            mMoviePresenter.getTopRatedMovies();
+            mMovieList = savedInstanceState.getParcelableArrayList(MOVIE_LIST_PARCELABLE);
+            showMovies(mMovieList);
         }
-
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(MOVIE_LIST_PARCELABLE, (ArrayList<? extends Parcelable>) mMovieList);
     }
 
     private void initToolbar() {
@@ -110,8 +126,8 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
         );
     }
 
-    private void initRecyclerView(){
-        recyclerView = (RecyclerView) findViewById(R.id.mainActivity_recycler_view);
+    private void initRecyclerView() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.mainActivity_recycler_view);
 
         //listener for onClick
         MovieAdapter.OnItemClickListener listener = new MovieAdapter.OnItemClickListener() {
@@ -121,8 +137,8 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
             }
         };
 
-        movieList = new ArrayList<>();
-        movieAdapter = new MovieAdapter(this, movieList, listener);
+        mMovieList = new ArrayList<>();
+        mMovieAdapter = new MovieAdapter(this, mMovieList, listener);
 
         int spanCount = 2;
         if (getResources().getDisplayMetrics().widthPixels > getResources().getDisplayMetrics().
@@ -131,9 +147,9 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
             spanCount = 3;
         }
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, spanCount);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(movieAdapter);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(mMovieAdapter);
     }
 
     @Override
@@ -155,10 +171,9 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
 
     @Override
     public void showMovies(List<Movie> movies) {
-
-        movieList = movies;
-        movieAdapter.setMovieList(movieList);
-        movieAdapter.notifyDataSetChanged();
+        mMovieList = movies;
+        mMovieAdapter.setMovieList(mMovieList);
+        mMovieAdapter.notifyDataSetChanged();
     }
 
     public void getFavorites() {
