@@ -1,11 +1,7 @@
-package de.philippveit.popmov.contentProvider;
+package de.philippveit.popmov.data.source.contentProvider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
-
-/**
- * Created by Philipp on 27.02.2018.
- */
 
 public class FavoriteContract {
 

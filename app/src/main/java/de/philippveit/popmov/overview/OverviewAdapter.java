@@ -1,4 +1,4 @@
-package de.philippveit.popmov.view;
+package de.philippveit.popmov.overview;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -24,7 +24,7 @@ import de.philippveit.popmov.data.Movie;
  * Created by pveit on 17.02.2018.
  */
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> {
+public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.MyViewHolder> {
 
 
     public interface OnItemClickListener {
@@ -51,7 +51,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         }
     }
 
-    public MovieAdapter(Context context, List<Movie> movies, OnItemClickListener onItemClickListener) {
+    public OverviewAdapter(Context context, List<Movie> movies, OnItemClickListener onItemClickListener) {
         this.mContext = context;
         this.movieList = movies;
         this.listener = onItemClickListener;

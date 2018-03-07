@@ -1,4 +1,4 @@
-package de.philippveit.popmov;
+package de.philippveit.popmov.detail;
 
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
@@ -33,13 +33,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.philippveit.popmov.MVP.MvpContract;
-import de.philippveit.popmov.contentProvider.FavoriteContract;
+import de.philippveit.popmov.R;
 import de.philippveit.popmov.data.Movie;
 import de.philippveit.popmov.data.Review;
 import de.philippveit.popmov.data.Video;
-import de.philippveit.popmov.presenter.DetailPresenter;
-import de.philippveit.popmov.view.ReviewAdapter;
-import de.philippveit.popmov.view.TrailerAdapter;
+import de.philippveit.popmov.data.source.contentProvider.FavoriteContract;
 
 /**
  * Created by pveit on 20.02.2018.

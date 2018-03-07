@@ -1,12 +1,8 @@
-package de.philippveit.popmov.contentProvider;
+package de.philippveit.popmov.data.source.contentProvider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-/**
- * Created by Philipp on 27.02.2018.
- */
 
 public class FavoriteDbHelper extends SQLiteOpenHelper {
 

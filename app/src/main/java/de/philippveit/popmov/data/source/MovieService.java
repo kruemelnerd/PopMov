@@ -1,4 +1,4 @@
-package de.philippveit.popmov.model;
+package de.philippveit.popmov.data.source;
 
 import de.philippveit.popmov.data.MovieDbResponse;
 import de.philippveit.popmov.data.ReviewDbResponse;

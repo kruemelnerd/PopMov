@@ -1,4 +1,4 @@
-package de.philippveit.popmov.presenter;
+package de.philippveit.popmov.detail;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import de.philippveit.popmov.data.Movie;
 import de.philippveit.popmov.data.ReviewDbResponse;
 import de.philippveit.popmov.data.Video;
 import de.philippveit.popmov.data.VideoDbResponse;
-import de.philippveit.popmov.model.MovieService;
+import de.philippveit.popmov.data.source.MovieService;
 import de.philippveit.popmov.util.MovieUtil;
 import retrofit2.Call;
 import retrofit2.Callback;

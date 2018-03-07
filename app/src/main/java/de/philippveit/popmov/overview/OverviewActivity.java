@@ -1,4 +1,4 @@
-package de.philippveit.popmov;
+package de.philippveit.popmov.overview;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,18 +25,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.philippveit.popmov.MVP.MvpContract;
-import de.philippveit.popmov.contentProvider.FavoriteContract;
+import de.philippveit.popmov.R;
 import de.philippveit.popmov.data.Movie;
-import de.philippveit.popmov.presenter.MainPresenter;
-import de.philippveit.popmov.view.MovieAdapter;
+import de.philippveit.popmov.data.source.contentProvider.FavoriteContract;
+import de.philippveit.popmov.detail.DetailActivity;
 
-public class MainActivity extends AppCompatActivity implements MvpContract.ViewOverviewOps {
+public class OverviewActivity extends AppCompatActivity implements MvpContract.ViewOverviewOps {
 
     private RecyclerView mRecyclerView;
     private DrawerLayout mDrawerLayout;
-    private MovieAdapter mMovieAdapter;
+    private OverviewAdapter mOverviewAdapter;
     private List<Movie> mMovieList;
-    private MvpContract.PresenterMainOps mMoviePresenter;
+    private MvpContract.PresenterOverviewOps mMoviePresenter;
 
     private static int viewPosition = -1;
     private static int viewTop = -1;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mMoviePresenter = new MainPresenter(this);
+        mMoviePresenter = new OverviewPresenter(this);
 
         initToolbar();
         initDrawer();
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
         mRecyclerView = (RecyclerView) findViewById(R.id.mainActivity_recycler_view);
 
         //listener for onClick
-        MovieAdapter.OnItemClickListener listener = new MovieAdapter.OnItemClickListener() {
+        OverviewAdapter.OnItemClickListener listener = new OverviewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, Movie movie) {
                 launchDetailActivity(position, movie);
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
         };
 
         mMovieList = new ArrayList<>();
-        mMovieAdapter = new MovieAdapter(this, mMovieList, listener);
+        mOverviewAdapter = new OverviewAdapter(this, mMovieList, listener);
 
         int spanCount = 2;
         if (getResources().getDisplayMetrics().widthPixels > getResources().getDisplayMetrics().
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, spanCount);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(mMovieAdapter);
+        mRecyclerView.setAdapter(mOverviewAdapter);
     }
 
     @Override
@@ -163,17 +163,17 @@ public class MainActivity extends AppCompatActivity implements MvpContract.ViewO
     }
 
     private void launchDetailActivity(int position, Movie movie) {
-        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        Intent intent = new Intent(OverviewActivity.this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_POSITION, position);
         intent.putExtra(DetailActivity.EXTRA_MOVIE, movie);
-        MainActivity.this.startActivity(intent);
+        OverviewActivity.this.startActivity(intent);
     }
 
     @Override
     public void showMovies(List<Movie> movies) {
         mMovieList = movies;
-        mMovieAdapter.setMovieList(mMovieList);
-        mMovieAdapter.notifyDataSetChanged();
+        mOverviewAdapter.setMovieList(mMovieList);
+        mOverviewAdapter.notifyDataSetChanged();
     }
 
     public void getFavorites() {

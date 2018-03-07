@@ -6,10 +6,6 @@ import de.philippveit.popmov.data.Movie;
 import de.philippveit.popmov.data.Review;
 import de.philippveit.popmov.data.Video;
 
-/**
- * Created by pveit on 18.02.2018.
- */
-
 public interface MvpContract {
     /**
      * View mandatory methods. Available to the presenter
@@ -32,7 +28,7 @@ public interface MvpContract {
      * Operations offered from Presenter to View
      *      View -> Presenter
      */
-    interface PresenterMainOps {
+    interface PresenterOverviewOps {
         void onCreate();
         void getPopularMovies();
         void getTopRatedMovies();

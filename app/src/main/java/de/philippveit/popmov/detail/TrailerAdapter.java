@@ -1,4 +1,4 @@
-package de.philippveit.popmov.view;
+package de.philippveit.popmov.detail;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

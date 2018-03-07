@@ -13,23 +13,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".overview.OverviewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
-            android:parentActivityName=".MainActivity">
+            android:name=".detail.DetailActivity"
+            android:parentActivityName=".overview.OverviewActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".overview.OverviewActivity" />
         </activity>
 
         <!-- Our ContentProvider -->
         <provider
-            android:name=".contentProvider.FavoriteProvider"
+            android:name=".data.source.contentProvider.FavoriteProvider"
             android:authorities="de.philippveit.popmov"
             android:exported="false" />
     </application>

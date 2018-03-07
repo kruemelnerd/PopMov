@@ -1,4 +1,4 @@
-package de.philippveit.popmov.contentProvider;
+package de.philippveit.popmov.data.source.contentProvider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -8,10 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-/**
- * Created by Philipp on 27.02.2018.
- */
 
 public class FavoriteProvider extends ContentProvider {
 
