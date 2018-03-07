@@ -3,10 +3,10 @@ package de.philippveit.popmov.overview;
 import java.text.ParseException;
 import java.util.List;
 
-import de.philippveit.popmov.BuildConfig;
 import de.philippveit.popmov.MVP.MvpContract;
 import de.philippveit.popmov.data.Movie;
 import de.philippveit.popmov.data.MovieDbResponse;
+import de.philippveit.popmov.data.source.MovieRepository;
 import de.philippveit.popmov.data.source.MovieService;
 import de.philippveit.popmov.util.MovieUtil;
 import retrofit2.Call;
@@ -20,11 +20,12 @@ import retrofit2.Response;
 public class OverviewPresenter implements MvpContract.PresenterOverviewOps {
 
     private MvpContract.ViewOverviewOps mMovieView;
+    private MovieRepository mMovieRepository;
     private String apiKey;
 
-    public OverviewPresenter(MvpContract.ViewOverviewOps mMovieView) {
+    public OverviewPresenter(MvpContract.ViewOverviewOps mMovieView, MovieRepository movieRepository) {
         this.mMovieView = mMovieView;
-        this.apiKey = BuildConfig.TMDBORG_API_KEY;
+        this.mMovieRepository = movieRepository;
     }
 
     @Override
@@ -34,6 +35,7 @@ public class OverviewPresenter implements MvpContract.PresenterOverviewOps {
 
     @Override
     public void getPopularMovies() {
+        //mMovieRepository.getPopularMovies()
         Call<MovieDbResponse> call = MovieService.getApi().getPopularMovies(apiKey, null, null);
         call.enqueue(new MovieCallback());
     }

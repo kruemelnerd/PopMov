@@ -27,6 +27,8 @@ import java.util.List;
 import de.philippveit.popmov.MVP.MvpContract;
 import de.philippveit.popmov.R;
 import de.philippveit.popmov.data.Movie;
+import de.philippveit.popmov.data.source.Injection;
+import de.philippveit.popmov.data.source.MovieRepository;
 import de.philippveit.popmov.data.source.contentProvider.FavoriteContract;
 import de.philippveit.popmov.detail.DetailActivity;
 
@@ -46,7 +48,9 @@ public class OverviewActivity extends AppCompatActivity implements MvpContract.V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mMoviePresenter = new OverviewPresenter(this);
+
+        MovieRepository movieRepository = Injection.provideMovieRepository(this);
+        mMoviePresenter = new OverviewPresenter(this, movieRepository );
 
         initToolbar();
         initDrawer();
