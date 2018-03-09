@@ -1,8 +1,6 @@
 package de.philippveit.popmov.overview;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -27,6 +25,7 @@ import java.util.List;
 import de.philippveit.popmov.MVP.MvpContract;
 import de.philippveit.popmov.R;
 import de.philippveit.popmov.data.Movie;
+import de.philippveit.popmov.data.MovieFilterType;
 import de.philippveit.popmov.data.source.Injection;
 import de.philippveit.popmov.data.source.MovieRepository;
 import de.philippveit.popmov.data.source.contentProvider.FavoriteContract;
@@ -40,8 +39,6 @@ public class OverviewActivity extends AppCompatActivity implements MvpContract.V
     private List<Movie> mMovieList;
     private MvpContract.PresenterOverviewOps mMoviePresenter;
 
-    private static int viewPosition = -1;
-    private static int viewTop = -1;
     private static final String MOVIE_LIST_PARCELABLE = "movie_list_parcelable";
 
     @Override
@@ -50,27 +47,17 @@ public class OverviewActivity extends AppCompatActivity implements MvpContract.V
         setContentView(R.layout.activity_main);
 
         MovieRepository movieRepository = Injection.provideMovieRepository(this);
-        mMoviePresenter = new OverviewPresenter(this, movieRepository );
+        mMoviePresenter = new OverviewPresenter(this, movieRepository);
 
         initToolbar();
         initDrawer();
         initRecyclerView();
 
+
         if (savedInstanceState == null) {
-            SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
-            String catMovieLoaded = sharedPreferences.getString(getString(R.string.preference_key_category_movies_loaded), getString(R.string.preference_default_category_movies_loaded));
-
-            String pop = this.getString(R.string.preference_popular_category_movies_loaded);
-            String fav = this.getString(R.string.preference_fav_category_movies_loaded);
-
-            if (pop.equals(catMovieLoaded)) {
-                mMoviePresenter.getPopularMovies();
-            } else if (fav.equals(catMovieLoaded)) {
-                getFavorites();
-            } else {
-                mMoviePresenter.getTopRatedMovies();
-            }
+            mMoviePresenter.start();
         } else {
+            //FIXME: Extract savedInstance to Model
             mMovieList = savedInstanceState.getParcelableArrayList(MOVIE_LIST_PARCELABLE);
             showMovies(mMovieList);
         }
@@ -101,28 +88,25 @@ public class OverviewActivity extends AppCompatActivity implements MvpContract.V
         mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         item.setChecked(true);
-                        getSharedPreferences(getString(R.string.preference_key_category_movies_loaded), MODE_PRIVATE);
-                        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
-
                         switch (item.getItemId()) {
                             case R.id.nav_polpular_movies:
-                                preferences.edit().putString(getString(R.string.preference_key_category_movies_loaded), getString(R.string.preference_popular_category_movies_loaded)).apply();
-                                mMoviePresenter.getPopularMovies();
+                                mMoviePresenter.setFiltering(MovieFilterType.POPULAR);
                                 break;
                             case R.id.nav_top_rated_movies:
-                                preferences.edit().putString(getString(R.string.preference_key_category_movies_loaded), getString(R.string.preference_top_rated_category_movies_loaded)).apply();
-                                mMoviePresenter.getTopRatedMovies();
+                                mMoviePresenter.setFiltering(MovieFilterType.TOP_RATED);
                                 break;
                             case R.id.nav_favorites_movies:
-                                preferences.edit().putString(getString(R.string.preference_key_category_movies_loaded), getString(R.string.preference_fav_category_movies_loaded)).apply();
-                                getFavorites();
+
+                                mMoviePresenter.setFiltering(MovieFilterType.FAVORITE);
                                 break;
                         }
+                        mMoviePresenter.loadMovies(false);
                         mDrawerLayout.closeDrawers();
                         return true;
                     }
