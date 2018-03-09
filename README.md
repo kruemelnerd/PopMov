@@ -2,7 +2,7 @@
 The second project for the Android Nanodegree from Udacity: Popular Movies.
 
 ### Build
-![build status](https://travis-ci.org/kruemelnerd/PopMov.svg?branch=UsingCorrectMvp)
+![build status](https://travis-ci.org/kruemelnerd/PopMov.svg?branch=master)
 
 
 ## API-Keys
