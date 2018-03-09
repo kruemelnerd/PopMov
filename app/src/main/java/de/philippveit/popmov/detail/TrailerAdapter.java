@@ -2,7 +2,6 @@ package de.philippveit.popmov.detail;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,8 +65,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerH
     public void onBindViewHolder(final TrailerHolder holder, int position) {
         final int adapterPosition = holder.getAdapterPosition();
         final Video video = mTrailerList.get(adapterPosition);
-        Log.i(TAG, "key: " + video.getKey());
-        Log.i(TAG, "url: " + video.getThumbnailUrl());
         Picasso.with(mContext)
                 .load(video.getThumbnailUrl())
                 .fit()

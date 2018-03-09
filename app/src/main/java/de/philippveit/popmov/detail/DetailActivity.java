@@ -60,6 +60,11 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     TextView mTextViewRating;
     @BindView(R.id.textViewReleaseDate)
     TextView mTextViewReleaseDate;
+    @BindView(R.id.textViewTrailerLabel)
+    TextView mTextViewTrailerLabel;
+    @BindView(R.id.textViewReviewsLabel)
+    TextView mTextViewReviewLabel;
+
 //    @BindView(R.id.textViewReviews)
 //    TextView mTextViewReviews;
     @BindView(R.id.imageViewThumbnail)
@@ -137,7 +142,7 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     private void initReviews(){
         mReviewList = new ArrayList<>();
         mReviewAdapter = new ReviewAdapter(this, mReviewList);
-        mRecyclerViewReviews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerViewReviews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecyclerViewReviews.setItemAnimator(new DefaultItemAnimator());
         mRecyclerViewReviews.setAdapter(mReviewAdapter);
     }
@@ -153,7 +158,9 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         loadImage(movie.getPosterPath(), mImageViewThumbnail, mProgressBarThumbnail);
         loadImage(movie.getBackdropPath(), mImageViewBackdrop, mProgressBarBackdrop);
 
+        mTextViewTrailerLabel.setVisibility(View.GONE);
         mMoviePresenter.getVideo(movie);
+        mTextViewReviewLabel.setVisibility(View.GONE);
         mMoviePresenter.getReviews(movie);
 
         displayIsFavorite(movie);
@@ -166,7 +173,6 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
                     //Delete Favorite
                     getContentResolver().delete(FavoriteContract.FavoriteEntry.buildFavoriteUriWithId(movie.getId()), null, null);
                     messageText = getString(R.string.favorite_deleted);
-                    ;
                     isFavorite = false;
                 } else {
                     //Save Favorite
@@ -228,25 +234,19 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
 
     @Override
     public void showReviews(List<Review> reviews) {
-
-//        for (Review review : reviews) {
-//            StringBuilder completeReview = new StringBuilder((String) mTextViewReviews.getText());
-//            completeReview.append(System.getProperty("line.separator"));
-//            completeReview.append(review.getAuthor() + ":" + System.getProperty("line.separator"));
-//            completeReview.append(review.getContent());
-//            completeReview.append(System.getProperty("line.separator"));
-//            mTextViewReviews.setText(completeReview.toString());
-//        }
-
-        mReviewList = reviews;
-        mReviewAdapter.setReviewList(mReviewList);
-        mReviewAdapter.notifyDataSetChanged();
+        if(!reviews.isEmpty()){
+            mTextViewReviewLabel.setVisibility(View.VISIBLE);
+            mReviewList = reviews;
+            mReviewAdapter.setReviewList(mReviewList);
+            mReviewAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
     public void showTrailer(List<Video> trailer){
         if(!trailer.isEmpty()){
             showPlayImageOnBackdrop(trailer.get(0).getKey());
+            mTextViewTrailerLabel.setVisibility(View.VISIBLE);
             mTrailerList = trailer;
             mTrailerAdapter.setmTrailerList(mTrailerList);
             mTrailerAdapter.notifyDataSetChanged();
