@@ -17,6 +17,7 @@
     <string name="nav_popular_movies_label">Popular</string>
     <string name="nav_favorits_movies_label">Favorites</string>
     <string name="error_loading_movies">Something went wrong while loading the movies. Sorry</string>
+    <string name="error_loading_single_movie">Something went wrong while loading the movies. Sorry</string>
     <string name="error_parsing_images">Something went wrong while parsing the images.</string>
     <string name="error_not_yet_rated">Sorry, this Feature is not yet rated.</string>
     <string name="favorite_saved">Saved as Favorite</string>

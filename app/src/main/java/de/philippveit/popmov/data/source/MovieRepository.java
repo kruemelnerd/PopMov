@@ -1,8 +1,10 @@
 package de.philippveit.popmov.data.source;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 
 import com.google.gson.Gson;
 
@@ -15,6 +17,8 @@ import de.philippveit.popmov.R;
 import de.philippveit.popmov.data.Movie;
 import de.philippveit.popmov.data.MovieDbResponse;
 import de.philippveit.popmov.data.MovieFilterType;
+import de.philippveit.popmov.data.ReviewDbResponse;
+import de.philippveit.popmov.data.VideoDbResponse;
 import de.philippveit.popmov.data.source.contentProvider.FavoriteContract;
 import de.philippveit.popmov.util.MovieUtil;
 import retrofit2.Call;
@@ -48,6 +52,18 @@ public class MovieRepository {
         mDirty = true;
     }
 
+    public void getReviews(String movieId, Callback<ReviewDbResponse> callback){
+        Call<ReviewDbResponse> call = MovieService.getApi().getReviews(movieId, API_KEY);
+        call.enqueue(callback);
+    }
+
+    public void getTrailer(String movieId, Callback<VideoDbResponse> callback) {
+//        if(mDirty) {
+        Call<VideoDbResponse> call = MovieService.getApi().getVideo(movieId, API_KEY);
+        call.enqueue(callback);
+//        }
+    }
+
     public void getPopularMovies(MovieDataSource.LoadMovieCallback callback) {
         if (mDirty) {
             Call<MovieDbResponse> call = MovieService.getApi().getPopularMovies(this.API_KEY, null, null);
@@ -64,6 +80,15 @@ public class MovieRepository {
         } else {
             // TODO: Get from CP
         }
+    }
+
+    public Uri saveLocalMovie(Movie movie){
+        ContentValues values = new ContentValues();
+        values.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID, movie.getId());
+        String json = new Gson().toJson(movie);
+        values.put(FavoriteContract.FavoriteEntry.COLUMN_JSON, json);
+
+        return mContext.getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI, values);
     }
 
     public void getFavoriteMovies(MovieDataSource.LoadMovieCallback callback) {

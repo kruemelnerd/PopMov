@@ -26,6 +26,12 @@ public interface MvpContract {
         void showReviews(List<Review> reviews);
 
         void showTrailer(List<Video> trailer);
+
+        void showErrorLoadingMessage();
+
+        void displayAsFavorite();
+
+        void displayAsNonFavorite();
     }
 
 
@@ -44,11 +50,13 @@ public interface MvpContract {
     }
 
     interface PresenterDetailOps {
-        void onCreate();
-
         void getVideo(Movie movie);
 
         void getReviews(Movie movie);
+
+        void saveMovieAsFavorite(Movie movie);
+
+        void checkAndMarkIfFavorite(Movie movie);
     }
 
 
