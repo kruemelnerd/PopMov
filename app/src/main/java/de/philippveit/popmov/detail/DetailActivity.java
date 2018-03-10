@@ -39,15 +39,10 @@ import de.philippveit.popmov.data.Review;
 import de.philippveit.popmov.data.Video;
 import de.philippveit.popmov.data.source.contentProvider.FavoriteContract;
 
-/**
- * Created by pveit on 20.02.2018.
- */
-
 public class DetailActivity extends AppCompatActivity implements MvpContract.ViewDetailOps {
 
     public static final String EXTRA_POSITION = "extra_position";
     public static final String EXTRA_MOVIE = "extra_movie";
-    private static final int DEFAULT_POSITION = -1;
     private static final String TAG = "DetailActivity";
 
     private MvpContract.PresenterDetailOps mMoviePresenter;
@@ -65,8 +60,6 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     @BindView(R.id.textViewReviewsLabel)
     TextView mTextViewReviewLabel;
 
-//    @BindView(R.id.textViewReviews)
-//    TextView mTextViewReviews;
     @BindView(R.id.imageViewThumbnail)
     ImageView mImageViewThumbnail;
     @BindView(R.id.imageViewBackdrop)
@@ -116,14 +109,14 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
 
     }
 
-    private void initToolbar(){
+    private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void initTrailer(){
+    private void initTrailer() {
 
         TrailerAdapter.OnClickListener onClickListener = new TrailerAdapter.OnClickListener() {
             @Override
@@ -134,12 +127,12 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         mTrailerList = new ArrayList<>();
         mTrailerAdapter = new TrailerAdapter(this, mTrailerList, onClickListener);
         mRecyclerViewTrailer.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mRecyclerViewTrailer.setItemAnimator(new DefaultItemAnimator()  );
+        mRecyclerViewTrailer.setItemAnimator(new DefaultItemAnimator());
         mRecyclerViewTrailer.setAdapter(mTrailerAdapter);
 
     }
 
-    private void initReviews(){
+    private void initReviews() {
         mReviewList = new ArrayList<>();
         mReviewAdapter = new ReviewAdapter(this, mReviewList);
         mRecyclerViewReviews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -200,11 +193,6 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     private Uri insertNewFavorite(Movie movie) {
         ContentValues values = new ContentValues();
         values.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID, movie.getId());
-        values.put(FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
-        values.put(FavoriteContract.FavoriteEntry.COLUMN_TITLE, movie.getTitle());
-        values.put(FavoriteContract.FavoriteEntry.COLUMN_PLOT, movie.getOverview());
-        values.put(FavoriteContract.FavoriteEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
-
         String json = new Gson().toJson(movie);
         values.put(FavoriteContract.FavoriteEntry.COLUMN_JSON, json);
 
@@ -215,7 +203,9 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         if (StringUtils.isBlank(path)) {
             path = "isEmpty";
         }
-        Picasso.with(this)
+        Picasso picasso = Picasso.with(this);
+//        picasso.setIndicatorsEnabled(true);         // Enable Picasso debugging
+        picasso
                 .load(path)
                 .fit()
                 .error(R.drawable.ic_thumb_down)
@@ -234,7 +224,7 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
 
     @Override
     public void showReviews(List<Review> reviews) {
-        if(!reviews.isEmpty()){
+        if (!reviews.isEmpty()) {
             mTextViewReviewLabel.setVisibility(View.VISIBLE);
             mReviewList = reviews;
             mReviewAdapter.setReviewList(mReviewList);
@@ -243,8 +233,8 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     }
 
     @Override
-    public void showTrailer(List<Video> trailer){
-        if(!trailer.isEmpty()){
+    public void showTrailer(List<Video> trailer) {
+        if (!trailer.isEmpty()) {
             showPlayImageOnBackdrop(trailer.get(0).getKey());
             mTextViewTrailerLabel.setVisibility(View.VISIBLE);
             mTrailerList = trailer;
