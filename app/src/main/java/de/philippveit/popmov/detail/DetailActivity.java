@@ -3,7 +3,6 @@ package de.philippveit.popmov.detail;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,7 +36,6 @@ import de.philippveit.popmov.data.Review;
 import de.philippveit.popmov.data.Video;
 import de.philippveit.popmov.data.source.Injection;
 import de.philippveit.popmov.data.source.MovieRepository;
-import de.philippveit.popmov.data.source.contentProvider.FavoriteContract;
 
 public class DetailActivity extends AppCompatActivity implements MvpContract.ViewDetailOps {
 
@@ -156,8 +154,7 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         mMoviePresenter.getVideo(movie);
         mTextViewReviewLabel.setVisibility(View.GONE);
         mMoviePresenter.getReviews(movie);
-
-        displayIsFavorite(movie);
+        mMoviePresenter.checkAndMarkIfFavorite(movie);
 
         mImageButtonFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,7 +171,7 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
                     messageText = getString(R.string.favorite_saved);
                     isFavorite = true;
                 }
-                displayIsFavorite(movie);
+                mMoviePresenter.checkAndMarkIfFavorite(movie);
                 Toast.makeText(DetailActivity.this, messageText, Toast.LENGTH_SHORT).show();
             }
         });
@@ -192,17 +189,6 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         mImageButtonFavorite.setImageResource(R.drawable.ic_heart_outline);
     }
 
-    private void displayIsFavorite(Movie movie) {
-        displayAsNonFavorite();
-        mMoviePresenter.checkAndMarkIfFavorite(movie);
-
-        Cursor cursor = getContentResolver().query(FavoriteContract.FavoriteEntry.buildFavoriteUriWithId(movie.getId()), null, null, null, null);
-        if (cursor.getCount() != 0) {
-            displayAsFavorite();
-        } else {
-            displayAsNonFavorite();
-        }
-    }
 
     private void loadImage(String path, ImageView intoImageView, final ProgressBar progressBar) {
         if (StringUtils.isBlank(path)) {
