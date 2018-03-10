@@ -1,5 +1,7 @@
 package de.philippveit.popmov.detail;
 
+import android.net.Uri;
+
 import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
@@ -11,20 +13,16 @@ import de.philippveit.popmov.data.Video;
 import de.philippveit.popmov.data.VideoDbResponse;
 import de.philippveit.popmov.data.source.MovieDataSource;
 import de.philippveit.popmov.data.source.MovieRepository;
+import de.philippveit.popmov.data.source.contentProvider.FavoriteCallback;
 import de.philippveit.popmov.util.MovieUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by Philipp on 27.02.2018.
- */
-
 public class DetailPresenter implements MvpContract.PresenterDetailOps {
 
     private MvpContract.ViewDetailOps mView;
     private MovieRepository mMovieRepository;
-
 
 
     public DetailPresenter(MvpContract.ViewDetailOps mView, MovieRepository movieRepository) {
@@ -36,7 +34,7 @@ public class DetailPresenter implements MvpContract.PresenterDetailOps {
     public void getVideo(Movie movie) {
 
         mMovieRepository.getTrailer(movie.getId().toString(),
-                new Callback<VideoDbResponse>(){
+                new Callback<VideoDbResponse>() {
                     @Override
                     public void onResponse(Call<VideoDbResponse> call, Response<VideoDbResponse> response) {
                         VideoDbResponse videoDbResponse = response.body();
@@ -53,7 +51,7 @@ public class DetailPresenter implements MvpContract.PresenterDetailOps {
                     public void onFailure(Call<VideoDbResponse> call, Throwable t) {
                         return;
                     }
-        });
+                });
     }
 
     @Override
@@ -77,19 +75,66 @@ public class DetailPresenter implements MvpContract.PresenterDetailOps {
 
     @Override
     public void saveMovieAsFavorite(Movie movie) {
-        mMovieRepository.saveLocalMovie(movie);
+        mMovieRepository.saveLocalMovie(movie, new FavoriteCallback() {
+
+
+            @Override
+            public void onResponseInsert(Uri uri) {
+                if (uri != null && StringUtils.isNotEmpty(uri.toString())) {
+                    mView.displayAsFavorite();
+                } else {
+                    mView.displayAsNonFavorite();
+                }
+            }
+
+            @Override
+            public void onResponseDelete(int amount) {
+                // Not needed
+            }
+
+            @Override
+            public void onFailure() {
+                mView.displayAsNonFavorite();
+            }
+        });
+    }
+
+    @Override
+    public void deleteMovieFromFavorite(Movie movie) {
+        mMovieRepository.deleteLocalMovie(movie, new FavoriteCallback() {
+
+            @Override
+            public void onResponseInsert(Uri uri) {
+                //Not needed
+            }
+
+            @Override
+            public void onResponseDelete(int amount) {
+                if(amount >= 1){
+                    mView.displayAsNonFavorite();
+                }else {
+                    mView.displayAsFavorite();
+                }
+            }
+
+            @Override
+            public void onFailure() {
+                mView.showErrorLoadingMessage();
+            }
+        });
+
     }
 
     @Override
     public void checkAndMarkIfFavorite(final Movie movie) {
-        if (StringUtils.isEmpty(movie.getId().toString())){
+        if (StringUtils.isEmpty(movie.getId().toString())) {
             return;
         }
         mMovieRepository.getFavoriteMovies(new MovieDataSource.LoadMovieCallback() {
             @Override
             public void onMoviesLoaded(List<Movie> movies) {
-                for (Movie favMovie : movies ) {
-                    if (favMovie.getId().equals(movie.getId())){
+                for (Movie favMovie : movies) {
+                    if (favMovie.getId().equals(movie.getId())) {
                         mView.displayAsFavorite();
                         return;
                     }
@@ -107,7 +152,7 @@ public class DetailPresenter implements MvpContract.PresenterDetailOps {
     private class SingleMovieCallback implements MovieDataSource.LoadMovieCallback {
         @Override
         public void onMoviesLoaded(List<Movie> movies) {
-            if(movies != null && movies.size() >=1 ){
+            if (movies != null && movies.size() >= 1) {
                 mView.showMovie(movies.get(0));
             }
         }

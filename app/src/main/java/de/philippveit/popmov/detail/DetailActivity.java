@@ -164,9 +164,8 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
             public void onClick(View v) {
                 String messageText;
                 if (isFavorite) {
-                    mMoviePresenter.saveMovieAsFavorite(movie);
                     //Delete Favorite
-                    //getContentResolver().delete(FavoriteContract.FavoriteEntry.buildFavoriteUriWithId(movie.getId()), null, null);
+                    mMoviePresenter.deleteMovieFromFavorite(movie);
                     messageText = getString(R.string.favorite_deleted);
                     isFavorite = false;
                 } else {

@@ -57,6 +57,8 @@ public interface MvpContract {
         void saveMovieAsFavorite(Movie movie);
 
         void checkAndMarkIfFavorite(Movie movie);
+
+        void deleteMovieFromFavorite(Movie movie);
     }
 
 

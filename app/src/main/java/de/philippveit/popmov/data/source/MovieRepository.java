@@ -1,5 +1,6 @@
 package de.philippveit.popmov.data.source;
 
+import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import de.philippveit.popmov.data.MovieDbResponse;
 import de.philippveit.popmov.data.MovieFilterType;
 import de.philippveit.popmov.data.ReviewDbResponse;
 import de.philippveit.popmov.data.VideoDbResponse;
+import de.philippveit.popmov.data.source.contentProvider.FavoriteCallback;
 import de.philippveit.popmov.data.source.contentProvider.FavoriteContract;
 import de.philippveit.popmov.util.MovieUtil;
 import retrofit2.Call;
@@ -52,7 +54,7 @@ public class MovieRepository {
         mDirty = true;
     }
 
-    public void getReviews(String movieId, Callback<ReviewDbResponse> callback){
+    public void getReviews(String movieId, Callback<ReviewDbResponse> callback) {
         Call<ReviewDbResponse> call = MovieService.getApi().getReviews(movieId, API_KEY);
         call.enqueue(callback);
     }
@@ -82,13 +84,38 @@ public class MovieRepository {
         }
     }
 
-    public Uri saveLocalMovie(Movie movie){
+    public void saveLocalMovie(Movie movie, final FavoriteCallback callback) {
         ContentValues values = new ContentValues();
         values.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID, movie.getId());
         String json = new Gson().toJson(movie);
         values.put(FavoriteContract.FavoriteEntry.COLUMN_JSON, json);
 
-        return mContext.getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI, values);
+        AsyncQueryHandler handler = new AsyncQueryHandler(mContext.getContentResolver()) {
+            @Override
+            protected void onInsertComplete(int token, Object cookie, Uri uri) {
+                super.onInsertComplete(token, cookie, uri);
+                if (uri == null) {
+                    callback.onFailure();
+                } else {
+                    callback.onResponseInsert(uri);
+                }
+            }
+        };
+        handler.startInsert(1, null, FavoriteContract.FavoriteEntry.CONTENT_URI, values);
+    }
+
+    public void deleteLocalMovie(Movie movie, final FavoriteCallback favoriteCallback) {
+        AsyncQueryHandler handler = new AsyncQueryHandler(mContext.getContentResolver()) {
+            @Override
+            protected void onDeleteComplete(int token, Object cookie, int result) {
+                if (result != 0) {
+                    favoriteCallback.onResponseDelete(result);
+                } else {
+                    favoriteCallback.onFailure();
+                }
+            }
+        };
+        handler.startDelete(1, null, FavoriteContract.FavoriteEntry.buildFavoriteUriWithId(movie.getId()), null, null);
     }
 
     public void getFavoriteMovies(MovieDataSource.LoadMovieCallback callback) {
