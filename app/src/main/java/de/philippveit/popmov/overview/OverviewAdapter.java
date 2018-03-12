@@ -81,7 +81,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.MyView
                     .with(mContext)
                     .load(posterPath)
                     .fit()
-                    .error(R.drawable.ic_thumb_up)
+                    .error(R.drawable.ic_thumb_down)
                     .into(holder.thumbnail, new Callback() {
                         @Override
                         public void onSuccess() {

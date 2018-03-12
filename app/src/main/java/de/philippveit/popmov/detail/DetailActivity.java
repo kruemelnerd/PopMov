@@ -1,10 +1,8 @@
 package de.philippveit.popmov.detail;
 
 import android.content.ActivityNotFoundException;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,7 +19,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -37,17 +34,13 @@ import de.philippveit.popmov.R;
 import de.philippveit.popmov.data.Movie;
 import de.philippveit.popmov.data.Review;
 import de.philippveit.popmov.data.Video;
-import de.philippveit.popmov.data.source.contentProvider.FavoriteContract;
-
-/**
- * Created by pveit on 20.02.2018.
- */
+import de.philippveit.popmov.data.source.Injection;
+import de.philippveit.popmov.data.source.MovieRepository;
 
 public class DetailActivity extends AppCompatActivity implements MvpContract.ViewDetailOps {
 
     public static final String EXTRA_POSITION = "extra_position";
     public static final String EXTRA_MOVIE = "extra_movie";
-    private static final int DEFAULT_POSITION = -1;
     private static final String TAG = "DetailActivity";
 
     private MvpContract.PresenterDetailOps mMoviePresenter;
@@ -65,8 +58,6 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
     @BindView(R.id.textViewReviewsLabel)
     TextView mTextViewReviewLabel;
 
-//    @BindView(R.id.textViewReviews)
-//    TextView mTextViewReviews;
     @BindView(R.id.imageViewThumbnail)
     ImageView mImageViewThumbnail;
     @BindView(R.id.imageViewBackdrop)
@@ -96,7 +87,9 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-        mMoviePresenter = new DetailPresenter(this);
+
+        MovieRepository movieRepository = Injection.provideMovieRepository(this);
+        mMoviePresenter = new DetailPresenter(this, movieRepository);
 
         mImageViewPlayButton.setVisibility(View.GONE);
         mProgressBarThumbnail.setVisibility(View.VISIBLE);
@@ -111,19 +104,18 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         Bundle data = intent.getExtras();
         Movie movie = (Movie) data.getParcelable(EXTRA_MOVIE);
 
-        //Is a presenter necessary? Or is it more realistic to u
         showMovie(movie);
 
     }
 
-    private void initToolbar(){
+    private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void initTrailer(){
+    private void initTrailer() {
 
         TrailerAdapter.OnClickListener onClickListener = new TrailerAdapter.OnClickListener() {
             @Override
@@ -134,12 +126,12 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         mTrailerList = new ArrayList<>();
         mTrailerAdapter = new TrailerAdapter(this, mTrailerList, onClickListener);
         mRecyclerViewTrailer.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mRecyclerViewTrailer.setItemAnimator(new DefaultItemAnimator()  );
+        mRecyclerViewTrailer.setItemAnimator(new DefaultItemAnimator());
         mRecyclerViewTrailer.setAdapter(mTrailerAdapter);
 
     }
 
-    private void initReviews(){
+    private void initReviews() {
         mReviewList = new ArrayList<>();
         mReviewAdapter = new ReviewAdapter(this, mReviewList);
         mRecyclerViewReviews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -162,8 +154,7 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         mMoviePresenter.getVideo(movie);
         mTextViewReviewLabel.setVisibility(View.GONE);
         mMoviePresenter.getReviews(movie);
-
-        displayIsFavorite(movie);
+        mMoviePresenter.checkAndMarkIfFavorite(movie);
 
         mImageButtonFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,51 +162,41 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
                 String messageText;
                 if (isFavorite) {
                     //Delete Favorite
-                    getContentResolver().delete(FavoriteContract.FavoriteEntry.buildFavoriteUriWithId(movie.getId()), null, null);
+                    mMoviePresenter.deleteMovieFromFavorite(movie);
                     messageText = getString(R.string.favorite_deleted);
                     isFavorite = false;
                 } else {
                     //Save Favorite
-                    Uri uri = insertNewFavorite(movie);
+                    mMoviePresenter.saveMovieAsFavorite(movie);
                     messageText = getString(R.string.favorite_saved);
                     isFavorite = true;
                 }
-                displayIsFavorite(movie);
+                mMoviePresenter.checkAndMarkIfFavorite(movie);
                 Toast.makeText(DetailActivity.this, messageText, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void displayIsFavorite(Movie movie) {
-        Cursor cursor = getContentResolver().query(FavoriteContract.FavoriteEntry.buildFavoriteUriWithId(movie.getId()), null, null, null, null);
+    @Override
+    public void displayAsFavorite() {
+        isFavorite = true;
+        mImageButtonFavorite.setImageResource(R.drawable.ic_heart);
+    }
+
+    @Override
+    public void displayAsNonFavorite() {
         isFavorite = false;
         mImageButtonFavorite.setImageResource(R.drawable.ic_heart_outline);
-        if (cursor.getCount() != 0) {
-            isFavorite = true;
-            mImageButtonFavorite.setImageResource(R.drawable.ic_heart);
-
-        }
     }
 
-    private Uri insertNewFavorite(Movie movie) {
-        ContentValues values = new ContentValues();
-        values.put(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID, movie.getId());
-        values.put(FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
-        values.put(FavoriteContract.FavoriteEntry.COLUMN_TITLE, movie.getTitle());
-        values.put(FavoriteContract.FavoriteEntry.COLUMN_PLOT, movie.getOverview());
-        values.put(FavoriteContract.FavoriteEntry.COLUMN_VOTE_AVERAGE, movie.getVoteAverage());
-
-        String json = new Gson().toJson(movie);
-        values.put(FavoriteContract.FavoriteEntry.COLUMN_JSON, json);
-
-        return getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI, values);
-    }
 
     private void loadImage(String path, ImageView intoImageView, final ProgressBar progressBar) {
         if (StringUtils.isBlank(path)) {
             path = "isEmpty";
         }
-        Picasso.with(this)
+        Picasso picasso = Picasso.with(this);
+//        picasso.setIndicatorsEnabled(true);         // Enable Picasso debugging
+        picasso
                 .load(path)
                 .fit()
                 .error(R.drawable.ic_thumb_down)
@@ -234,23 +215,37 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
 
     @Override
     public void showReviews(List<Review> reviews) {
-        if(!reviews.isEmpty()){
+        if (reviews != null && !reviews.isEmpty()) {
             mTextViewReviewLabel.setVisibility(View.VISIBLE);
+            mRecyclerViewReviews.setVisibility(View.VISIBLE);
             mReviewList = reviews;
             mReviewAdapter.setReviewList(mReviewList);
             mReviewAdapter.notifyDataSetChanged();
+        }else{
+            mTextViewReviewLabel.setVisibility(View.GONE);
+            mRecyclerViewReviews.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void showTrailer(List<Video> trailer){
-        if(!trailer.isEmpty()){
+    public void showTrailer(List<Video> trailer) {
+        if (trailer != null && !trailer.isEmpty()) {
             showPlayImageOnBackdrop(trailer.get(0).getKey());
             mTextViewTrailerLabel.setVisibility(View.VISIBLE);
+            mRecyclerViewTrailer.setVisibility(View.VISIBLE);
             mTrailerList = trailer;
             mTrailerAdapter.setmTrailerList(mTrailerList);
             mTrailerAdapter.notifyDataSetChanged();
+        }else {
+            mTextViewTrailerLabel.setVisibility(View.GONE);
+            mRecyclerViewTrailer.setVisibility(View.GONE);
+
         }
+    }
+
+    @Override
+    public void showErrorLoadingMessage() {
+        Toast.makeText(this, getString(R.string.error_loading_single_movie), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -264,14 +259,21 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
         });
     }
 
-    public static void watchYoutubeVideo(Context context, String id) {
+    public void watchYoutubeVideo(Context context, String id) {
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("http://www.youtube.com/watch?v=" + id));
         try {
-            context.startActivity(appIntent);
+            if (appIntent.resolveActivity(context.getPackageManager()) != null) {
+                context.startActivity(appIntent);
+            } else if (webIntent.resolveActivity(context.getPackageManager()) != null) {
+                context.startActivity(webIntent);
+            } else {
+                throw new ActivityNotFoundException();
+            }
+
         } catch (ActivityNotFoundException ex) {
-            context.startActivity(webIntent);
+            showErrorLoadingMessage();
         }
     }
 }

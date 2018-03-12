@@ -30,7 +30,7 @@ public class MovieUtil {
     }
 
     public static String normalizeMovieDbImages(String imagename, String size) {
-        if (StringUtils.isNotEmpty(imagename)) {
+        if (StringUtils.isNotEmpty(imagename) && !imagename.startsWith(movieImageUrl)) {
             StringBuilder completeImageUrl = new StringBuilder();
             completeImageUrl.append(movieImageUrl);
             completeImageUrl.append(size);
@@ -38,16 +38,23 @@ public class MovieUtil {
             completeImageUrl.append(imagename);
             return completeImageUrl.toString();
         } else {
-            return "";
+            return imagename;
         }
     }
 
     public static String normalizeDate(String date) throws ParseException {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        Date result = df.parse(date);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        return sdf.format(result);
+        if (date.matches("([0-9]{4})-([0-9]{2})-([0-9]{2})")){
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            Date result = df.parse(date);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            return sdf.format(result);
+        }else if (date.matches("([0-9]{2}).([0-9]{2}).([0-9]{4})")) {
+            return date;
+        }else{
+            throw new ParseException("Unparsable Date: " + date, 0);
+        }
     }
 
     public static List<Movie> normalizeMovies(List<Movie> movies) throws ParseException {
