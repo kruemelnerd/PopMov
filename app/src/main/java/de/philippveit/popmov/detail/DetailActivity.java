@@ -215,22 +215,31 @@ public class DetailActivity extends AppCompatActivity implements MvpContract.Vie
 
     @Override
     public void showReviews(List<Review> reviews) {
-        if (!reviews.isEmpty()) {
+        if (reviews != null && !reviews.isEmpty()) {
             mTextViewReviewLabel.setVisibility(View.VISIBLE);
+            mRecyclerViewReviews.setVisibility(View.VISIBLE);
             mReviewList = reviews;
             mReviewAdapter.setReviewList(mReviewList);
             mReviewAdapter.notifyDataSetChanged();
+        }else{
+            mTextViewReviewLabel.setVisibility(View.GONE);
+            mRecyclerViewReviews.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void showTrailer(List<Video> trailer) {
-        if (!trailer.isEmpty()) {
+        if (trailer != null && !trailer.isEmpty()) {
             showPlayImageOnBackdrop(trailer.get(0).getKey());
             mTextViewTrailerLabel.setVisibility(View.VISIBLE);
+            mRecyclerViewTrailer.setVisibility(View.VISIBLE);
             mTrailerList = trailer;
             mTrailerAdapter.setmTrailerList(mTrailerList);
             mTrailerAdapter.notifyDataSetChanged();
+        }else {
+            mTextViewTrailerLabel.setVisibility(View.GONE);
+            mRecyclerViewTrailer.setVisibility(View.GONE);
+
         }
     }
 
